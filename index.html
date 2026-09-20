@@ -45,7 +45,7 @@
         linear-gradient(180deg, rgba(0,0,0,0.12), rgba(0,0,0,0.18)),
         var(--bg);
       color:var(--muted);
-      display:flex;align-items:center;justify-content:center;padding:32px;
+      display:flex;align-items:center;justify-content:center;padding:20px;
     }
 
     .container{
@@ -54,35 +54,37 @@
     }
 
     header{
-      display:flex;align-items:center;gap:16px;padding:18px 24px;
+      display:flex;align-items:center;gap:12px;padding:14px 18px;
       background: linear-gradient(90deg, var(--accent), var(--accent2));
       color:#042028;
+      box-sizing:border-box;
     }
     .logo{
-      width:72px;height:72px;background:var(--accent2);
+      width:60px;height:60px;background:var(--accent2);
       border-radius:8px;display:flex;align-items:center;justify-content:center;
-      font-family:'Press Start 2P', monospace;color:#04210a;font-size:12px;
+      font-family:'Press Start 2P', monospace;color:#04210a;font-size:11px;
       box-shadow: none;
+      flex-shrink:0;
     }
-    header h1{font-family:'Press Start 2P', monospace;font-size:18px;margin:0;color:#042028;}
+    header h1{font-family:'Press Start 2P', monospace;font-size:16px;margin:0;color:#042028;line-height:1;}
     header p{margin:0;margin-left:auto;color:#042028;font-size:12px;opacity:0.95;}
 
-    main{display:flex;gap:20px;padding:24px;flex-wrap:wrap;}
-    .left{flex:1;min-width:260px;}
-    .right{width:320px;min-width:260px;}
+    main{display:flex;gap:16px;padding:18px;flex-wrap:wrap;box-sizing:border-box;}
+    .left{flex:1;min-width:220px;}
+    .right{width:320px;min-width:220px;}
 
-    .card{background:rgba(255,255,255,0.02);padding:16px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);}
-    h2{font-family:'Press Start 2P', monospace;font-size:14px;margin:0 0 12px 0;color:var(--accent);}
+    .card{background:rgba(255,255,255,0.02);padding:14px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);box-sizing:border-box;}
+    h2{font-family:'Press Start 2P', monospace;font-size:13px;margin:0 0 10px 0;color:var(--accent);}
 
     .desc{line-height:1.6;color:var(--muted);font-size:14px;}
-    .features{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:12px;}
+    .features{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:10px;}
     .feature{background:rgba(255,255,255,0.02);padding:8px;border-radius:6px;font-size:13px;color:var(--muted);border:1px solid rgba(255,255,255,0.02);}
 
     .download{
-      display:flex;flex-direction:column;gap:12px;align-items:stretch;
+      display:flex;flex-direction:column;gap:10px;align-items:stretch;
     }
     .btn{
-      display:inline-block;padding:12px 16px;border-radius:8px;text-align:center;font-weight:700;
+      display:inline-block;padding:12px 14px;border-radius:8px;text-align:center;font-weight:700;
       color:#042028;background:var(--accent);text-decoration:none;font-family:'Press Start 2P',monospace;
       box-shadow:none;border:0;
     }
@@ -91,7 +93,7 @@
     .meta{font-size:13px;color:var(--muted-2);}
     .small{font-size:12px;color:#bfe9c9;}
 
-    footer{padding:12px 20px;background:linear-gradient(90deg,rgba(0,0,0,0.06),rgba(0,0,0,0.03));display:flex;gap:12px;align-items:center;}
+    footer{padding:10px 16px;background:linear-gradient(90deg,rgba(0,0,0,0.06),rgba(0,0,0,0.03));display:flex;gap:12px;align-items:center;}
     footer .left{font-size:13px;color:var(--muted-2);}
     footer .right{margin-left:auto;font-size:12px;color:#9fcfb0;}
 
@@ -100,18 +102,24 @@
     .btn:hover { transform: translateY(-2px); filter:brightness(1.03); }
     .btn.secondary:hover { transform: translateY(-2px); filter:brightness(1.03); }
 
+    /* スマホで上部が切れる問題を防ぐ */
     @media(max-width:760px){
-      main{flex-direction:column;}
+      body{padding:12px;}
+      header{padding:12px 14px;}
+      .logo{width:52px;height:52px;font-size:10px;}
+      header h1{font-size:14px;}
+      main{padding:14px;}
+      .container{border-radius:10px;}
       .right{width:100%;}
     }
   </style>
 </head>
 <body>
-  <div class="container">
+  <div class="container" role="main" aria-labelledby="page-title">
     <header>
-      <div class="logo">SLIME</div>
+      <div class="logo" aria-hidden="true">SLIME</div>
       <div>
-        <h1>Slime Chunk Detector</h1>
+        <h1 id="page-title">Slime Chunk Detector</h1>
         <div class="small">日本語版 配布ページ</div>
       </div>
       <p>v1.0.0</p>
@@ -119,24 +127,24 @@
 
     <main>
       <section class="left">
-        <div class="card">
-          <h2>概要</h2>
+        <div class="card" aria-labelledby="overview-title">
+          <h2 id="overview-title">概要</h2>
           <p class="desc">
             Slime Chunk Detector は Minecraft のスライムチャンクを判定するツールです。  
             シングルプレイやサーバーで使用可能です。また、バージョン指定も可能です。
           </p>
 
           <h2>特徴</h2>
-          <div class="features">
-            <div class="feature">軽量 実行ファイル</div>
-            <div class="feature">オフラインで動作</div>
-            <div class="feature">日本語のみ対応</div>
-            <div class="feature">バージョン管理済み</div>
-            <div class="feature">ゲームバージョン指定可能</div>
-            <div class="feature">発見した箇所をtxtで保存可能</div>
+          <div class="features" role="list">
+            <div class="feature" role="listitem">軽量 実行ファイル</div>
+            <div class="feature" role="listitem">オフラインで動作</div>
+            <div class="feature" role="listitem">日本語のみ対応</div>
+            <div class="feature" role="listitem">バージョン管理済み</div>
+            <div class="feature" role="listitem">ゲームバージョン指定可能</div>
+            <div class="feature" role="listitem">発見した箇所をtxtで保存可能</div>
           </div>
 
-          <h2 style="margin-top:14px">使い方</h2>
+          <h2 style="margin-top:12px">使い方</h2>
           <ol class="small" style="line-height:1.7">
             <li>Releases から最新版の exe をダウンロード</li>
             <li>exe を起動する</li>
@@ -145,14 +153,14 @@
         </div>
       </section>
 
-      <aside class="right">
-        <div class="card download">
-          <h2>ダウンロード</h2>
+      <aside class="right" aria-labelledby="download-title">
+        <div class="card download" id="download-block">
+          <h2 id="download-title">ダウンロード</h2>
 
           <!-- Releases の実際のダウンロード URL を href に置き、download 属性で保存名を指定 -->
           <a id="downloadBtn" class="btn"
              href="https://github.com/sikuro0/slime-chunk-Detector-java-ja_jp/releases/download/main/slime-chunk.exe"
-             download="slime-chunk.exe">最新版をダウンロード</a>
+             download="slime-chunk.exe" aria-label="最新版をダウンロード">最新版をダウンロード</a>
 
           <a class="btn secondary" href="https://github.com/sikuro0/slime-chunk-Detector-java-ja_jp/releases" target="_blank" rel="noopener">Releases ページを開く</a>
 
@@ -163,11 +171,45 @@
           </div>
         </div>
 
-        <div class="card" style="margin-top:12px">
-          <h2>サポート</h2>
+        <div class="card" style="margin-top:12px" aria-labelledby="support-title">
+          <h2 id="support-title">サポート</h2>
           <p class="small">不具合報告や要望は Issues へお願いします。</p>
           <p class="small"><a href="https://github.com/sikuro0/slime-chunk-Detector-java-ja_jp/issues" style="color:var(--muted)">Issue を作成する</a></p>
         </div>
+
+        <!-- ここから SmartScreen とウイルス対策の案内を追加 -->
+        <div class="card" style="margin-top:12px" aria-labelledby="safety-title">
+          <h2 id="safety-title">実行ファイルの安全性と警告への対処</h2>
+
+          <p class="desc"><strong>この実行ファイルについて</strong><br>
+          このプログラムはシード値からスライムチャンクを判定する単機能ツールです。<strong>ネットワーク接続は行いません</strong>。ソースコードは GitHub リポジトリで公開しています。</p>
+
+          <h2 style="margin-top:8px">検証方法</h2>
+          <p class="small"><strong>SHA-256 チェックサム</strong>を公開しています。ダウンロード後にチェックサムを照合してください。</p>
+          <pre style="background:rgba(0,0,0,0.06);padding:8px;border-radius:6px;overflow:auto">SHA256: ここに実際のハッシュを貼ってください</pre>
+          <p class="small">Windows（PowerShell）: <code>Get-FileHash .\slime-chunk.exe -Algorithm SHA256</code></p>
+          <p class="small">Linux/macOS: <code>sha256sum slime-chunk.exe</code></p>
+
+          <h2 style="margin-top:8px">SmartScreen が表示された場合の手順</h2>
+          <ol class="small" style="line-height:1.6">
+            <li><strong>ダウンロード元を確認</strong>：リンクが <code>github.com</code> の Releases であることを確認してください。</li>
+            <li><strong>チェックサムを照合</strong>：上の SHA-256 と一致することを確認します。</li>
+            <li><strong>プロパティでブロック解除</strong>：ファイルを右クリック → <em>プロパティ</em> → 「ブロックの解除」にチェック → 適用。</li>
+            <li><strong>SmartScreen の詳細から実行</strong>：警告画面で「詳細情報」→「実行」を選択して続行できます（自己責任で実行してください）。</li>
+          </ol>
+
+          <h2 style="margin-top:8px">ウイルス対策ソフトの誤検知への対応</h2>
+          <p class="small">誤検知が出た場合は以下を推奨します。</p>
+          <ul class="small" style="line-height:1.6">
+            <li>VirusTotal にファイルをアップロードしてスキャン結果を確認し、問題がないことを示すリンクをページに掲載する。</li>
+            <li>ソースコードを公開している場合はビルド手順を示し、ユーザーが自分でビルドできることを案内する。</li>
+            <li>必要であれば、主要なウイルス対策ベンダーに誤検知の報告を行う（各社の誤検知報告フォームを利用）。</li>
+          </ul>
+
+          <h2 style="margin-top:8px">簡潔な注意書き</h2>
+          <p class="small">当ソフトを実行する前に必ずチェックサムを確認してください。疑わしい点があれば実行を中止し、Issue でご相談ください。</p>
+        </div>
+        <!-- ここまで案内 -->
       </aside>
     </main>
 
@@ -189,6 +231,22 @@
           btn.href = '#';
         }
       }
+
+      // モバイルでヘッダーが切れる問題をさらに防ぐために
+      // ページ読み込み時にヘッダーの高さ分だけボディ上部に余白を確保
+      function adjustForMobileHeader(){
+        const header = document.querySelector('header');
+        if(!header) return;
+        const rect = header.getBoundingClientRect();
+        // スマホで表示が切れる場合に備え、コンテナの上マージンを調整
+        if(window.innerWidth <= 760){
+          document.querySelector('.container').style.marginTop = (rect.height * 0.1) + 'px';
+        } else {
+          document.querySelector('.container').style.marginTop = '0';
+        }
+      }
+      window.addEventListener('load', adjustForMobileHeader);
+      window.addEventListener('resize', adjustForMobileHeader);
     })();
   </script>
 </body>

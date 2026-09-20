@@ -96,10 +96,13 @@
       border: 1px solid rgba(255,255,255,0.05);
       overflow: hidden;
     }
+    /* summary を本文フォントに揃える（Releases / SmartScreen 表示の不一致を解消） */
     .acc-summary {
       cursor: pointer;
       padding: 10px 12px;
-      font-family: 'Press Start 2P', monospace;
+      font-family: inherit; /* ここで本文フォントを継承 */
+      font-weight: 700;
+      letter-spacing: 0.02em;
       color: var(--accent);
       display: flex;
       align-items: center;
@@ -118,6 +121,26 @@
       font-size: 14px;
       color: var(--muted);
       line-height: 1.6;
+      font-family: inherit;
+    }
+
+    /* code の見た目を本文に馴染ませる */
+    code, pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Noto Sans Mono", monospace;
+      font-size: 0.95em;
+      background: rgba(255,255,255,0.02);
+      padding: 0.08em 0.28em;
+      border-radius: 4px;
+      color: var(--muted-2);
+      border: 1px solid rgba(255,255,255,0.02);
+    }
+    .inline-code {
+      font-family: inherit;
+      background: rgba(255,255,255,0.01);
+      padding: 0.06em 0.18em;
+      border-radius: 4px;
+      color: var(--muted-2);
+      border: 1px solid rgba(255,255,255,0.01);
     }
 
     /* Mobile-specific */
@@ -131,8 +154,8 @@
       .right{width:100%}
       .features{grid-template-columns:1fr}
       .card{padding:12px}
-      .acc-summary { font-size: 14px; padding: 10px; }
-      .acc-body { font-size: 14px; padding: 10px; }
+      .acc-summary { font-size: 14px; }
+      .acc-body { font-size: 14px; }
     }
 
     /* Desktop tweaks */
@@ -223,7 +246,7 @@
             <summary class="acc-summary">SmartScreen が表示された場合の手順</summary>
             <div class="acc-body">
               <ol class="small" style="line-height:1.6">
-                <li><strong>ダウンロード元を確認</strong>：リンクが <code>github.com</code> の Releases であることを確認してください。</li>
+                <li><strong>ダウンロード元を確認</strong>：リンクが <span class="inline-code">github.com</span> の Releases であることを確認してください。</li>
                 <li><strong>プロパティでブロック解除</strong>：ファイルを右クリック → <em>プロパティ</em> → 「ブロックの解除」にチェック → 適用。</li>
                 <li><strong>SmartScreen の詳細から実行</strong>：警告画面で「詳細情報」→「実行」を選択して続行できます（自己責任で実行してください）。</li>
               </ol>
@@ -231,7 +254,7 @@
           </details>
 
           <details class="acc-item">
-            <summary class="acc-summary">ウイルス対策ソフトの誤検知への対応</summary>
+            <summary class="acc-summary">ウイルス対策ソフトの誤検知への対処</summary>
             <div class="acc-body">
               <ul class="small" style="line-height:1.6">
                 <li>VirusTotal にファイルをアップロードしてスキャン結果を確認する。</li>
@@ -273,11 +296,8 @@
         }).catch(()=>{ /* ignore CORS */ });
       }
 
-      // Ensure responsive title/header behavior
-      function toggleHelpers(){
-        const isMobile = window.innerWidth <= 760;
-        // nothing else needed here for now; kept for future tweaks
-      }
+      // Responsive helper (kept for future tweaks)
+      function toggleHelpers(){ /* no-op for now */ }
       window.addEventListener('load', toggleHelpers);
       window.addEventListener('resize', toggleHelpers);
     })();

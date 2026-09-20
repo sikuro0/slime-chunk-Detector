@@ -103,7 +103,7 @@
           <h2>概要</h2>
           <p class="desc">
             Slime Chunk Detector は Minecraft のスライムチャンクを判定するツールです。  
-            シングルプレイやサーバーで使用可能です。また、バージョン指定も可能です
+            シングルプレイやサーバーで使用可能です。また、バージョン指定も可能です。
           </p>
 
           <h2>特徴</h2>
@@ -129,15 +129,17 @@
         <div class="card download">
           <h2>ダウンロード</h2>
 
-          <!-- ここをあなたの Releases の直接ダウンロード URL に置き換える -->
-          <a id="downloadBtn" class="btn" href="https://github.com/sikuro0/slime-chunk-Detector-java-ja_jp/releases/download/main/slime-chunk.exe" download>最新版をダウンロード</a>
+          <!-- Releases の実際のダウンロード URL を href に置き、download 属性で保存名を指定 -->
+          <a id="downloadBtn" class="btn"
+             href="https://github.com/sikuro0/slime-chunk-Detector-java-ja_jp/releases/download/main/slime-chunk.exe"
+             download="slime-chunk.exe">最新版をダウンロード</a>
 
           <a class="btn secondary" href="https://github.com/sikuro0/slime-chunk-Detector-java-ja_jp/releases" target="_blank" rel="noopener">Releases ページを開く</a>
 
           <div style="margin-top:8px" class="meta">
             <div>ファイル形式: <strong>.exe</strong></div>
             <div>サイズ: <span id="fileSize">—</span></div>
-            <div style="margin-top:8px" class="small">※ ダウンロードリンクはリリースのタグ名とファイル名に依存します。</div>
+            <div style="margin-top:8px" class="small">※ リリースのタグ名とファイル名に依存します。必要なら Releases のアセット名を修正してください。</div>
           </div>
         </div>
 
@@ -159,7 +161,7 @@
     // ダウンロードURLが置き換えられていない場合の注意表示
     (function(){
       const btn = document.getElementById('downloadBtn');
-      if(!btn || btn.href.includes('DOWNLOAD_URL') || btn.href.endsWith('#')){
+      if(!btn || btn.href.includes('DOWNLOAD_URL') || btn.href.endsWith('#') || btn.href.indexOf('github.com') === -1){
         if(btn){
           btn.textContent = 'ダウンロードリンクを設定してください';
           btn.style.background = '#b34d4d';

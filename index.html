@@ -7,6 +7,8 @@
   <meta name="description" content="Minecraft用のスライムチャンク判定ツール「Slime Chunk Detector」日本語版。オフラインで動作する軽量実行ファイルをGitHub Releasesからダウンロードできます。">
   <meta name="keywords" content="Minecraft, スライムチャンク, Slime Chunk Detector, スライム, ダウンロード, 日本語">
   <meta name="robots" content="index,follow">
+
+  <!-- Open Graph / Twitter -->
   <meta property="og:title" content="Slime Chunk Detector 日本語版 - ダウンロード">
   <meta property="og:description" content="Minecraft用のスライムチャンク判定ツール。オフラインで動作する軽量実行ファイルをGitHub Releasesからダウンロードできます。">
   <meta property="og:type" content="website">
@@ -14,10 +16,12 @@
   <meta property="og:site_name" content="Slime Chunk Detector 日本語版">
   <meta name="twitter:card" content="summary">
   <link rel="canonical" href="https://sikuro0.github.io/slime-chunk-Detector-java-ja_jp/">
+
+  <!-- フォント -->
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
   <style>
-    /* Base reset */
+    /* Reset & base */
     *,*::before,*::after{box-sizing:border-box}
     html,body{height:100%;margin:0;font-family:"Noto Sans JP",system-ui,-apple-system,"Segoe UI",Roboto,Arial;background:#071428;color:#e6f7ff}
     :root{
@@ -84,7 +88,39 @@
     footer .left{font-size:13px;color:var(--muted-2)}
     footer .right{margin-left:auto;font-size:12px;color:#9fcfb0}
 
-    /* Mobile-specific: header sticky, compact spacing, single-column layout */
+    /* Accordion */
+    .acc-item {
+      background: rgba(255,255,255,0.02);
+      border-radius: 8px;
+      margin-bottom: 10px;
+      border: 1px solid rgba(255,255,255,0.05);
+      overflow: hidden;
+    }
+    .acc-summary {
+      cursor: pointer;
+      padding: 10px 12px;
+      font-family: 'Press Start 2P', monospace;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      user-select: none;
+    }
+    .acc-summary::-webkit-details-marker { display: none; }
+    .acc-summary::after {
+      content: "▸";
+      color: var(--muted-2);
+      transition: transform .18s ease;
+    }
+    .acc-item[open] .acc-summary::after { transform: rotate(90deg); }
+    .acc-body {
+      padding: 10px 12px 14px 12px;
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* Mobile-specific */
     @media (max-width: 760px){
       .container{margin:8px;border-radius:10px}
       header{padding:12px 14px;gap:10px;min-height:56px;position:sticky;top:0;z-index:30}
@@ -95,9 +131,11 @@
       .right{width:100%}
       .features{grid-template-columns:1fr}
       .card{padding:12px}
+      .acc-summary { font-size: 14px; padding: 10px; }
+      .acc-body { font-size: 14px; padding: 10px; }
     }
 
-    /* Desktop-specific: slightly wider right column and two-column features */
+    /* Desktop tweaks */
     @media (min-width: 1200px){
       :root{--max-width:1100px}
       .right{width:360px}
@@ -168,28 +206,47 @@
           <p class="small"><a href="https://github.com/sikuro0/slime-chunk-Detector-java-ja_jp/issues" style="color:var(--muted)">Issue を作成する</a></p>
         </div>
 
+        <!-- 折りたたみ式の安全性案内 -->
         <div class="card" style="margin-top:12px" aria-labelledby="safety-title">
           <h2 id="safety-title">実行ファイルの安全性と警告への対処</h2>
 
-          <p class="desc"><strong>この実行ファイルについて</strong><br>
-          このプログラムはシード値からスライムチャンクを判定する単機能ツールです。<strong>ネットワーク接続は行いません</strong>。ソースコードは GitHub リポジトリで公開しています。</p>
+          <details class="acc-item">
+            <summary class="acc-summary">この実行ファイルについて</summary>
+            <div class="acc-body">
+              <p class="desc">
+                このプログラムはシード値からスライムチャンクを判定する単機能ツールです。<strong>ネットワーク接続は行いません</strong>。ソースコードは GitHub リポジトリで公開しています。
+              </p>
+            </div>
+          </details>
 
-          <h2 style="margin-top:8px">SmartScreen が表示された場合の手順</h2>
-          <ol class="small" style="line-height:1.6">
-            <li><strong>ダウンロード元を確認</strong>：リンクが <code>github.com</code> の Releases であることを確認してください。</li>
-            <li><strong>プロパティでブロック解除</strong>：ファイルを右クリック → <em>プロパティ</em> → 「ブロックの解除」にチェック → 適用。</li>
-            <li><strong>SmartScreen の詳細から実行</strong>：警告画面で「詳細情報」→「実行」を選択して続行できます（自己責任で実行してください）。</li>
-          </ol>
+          <details class="acc-item">
+            <summary class="acc-summary">SmartScreen が表示された場合の手順</summary>
+            <div class="acc-body">
+              <ol class="small" style="line-height:1.6">
+                <li><strong>ダウンロード元を確認</strong>：リンクが <code>github.com</code> の Releases であることを確認してください。</li>
+                <li><strong>プロパティでブロック解除</strong>：ファイルを右クリック → <em>プロパティ</em> → 「ブロックの解除」にチェック → 適用。</li>
+                <li><strong>SmartScreen の詳細から実行</strong>：警告画面で「詳細情報」→「実行」を選択して続行できます（自己責任で実行してください）。</li>
+              </ol>
+            </div>
+          </details>
 
-          <h2 style="margin-top:8px">ウイルス対策ソフトの誤検知への対応</h2>
-          <p class="small">誤検知が出た場合は以下を推奨します。</p>
-          <ul class="small" style="line-height:1.6">
-            <li>VirusTotal にファイルをアップロードしてスキャン結果を確認する。</li>
-            <li>ソースコードを確認し、問題がないことを示す。</li>
-            <li>必要であれば主要ベンダーに誤検知を報告する。</li>
-          </ul>
+          <details class="acc-item">
+            <summary class="acc-summary">ウイルス対策ソフトの誤検知への対応</summary>
+            <div class="acc-body">
+              <ul class="small" style="line-height:1.6">
+                <li>VirusTotal にファイルをアップロードしてスキャン結果を確認する。</li>
+                <li>ソースコードを確認し、問題がないことを示す。</li>
+                <li>必要であれば主要ベンダーに誤検知を報告する。</li>
+              </ul>
+            </div>
+          </details>
 
-          <p class="small">疑わしい点があれば実行を中止し、Issue でご相談ください。</p>
+          <details class="acc-item">
+            <summary class="acc-summary">最後に（注意）</summary>
+            <div class="acc-body">
+              <p class="small">疑わしい点があれば実行を中止し、Issue でご相談ください。</p>
+            </div>
+          </details>
         </div>
       </aside>
     </main>
@@ -216,19 +273,13 @@
         }).catch(()=>{ /* ignore CORS */ });
       }
 
-      // Ensure header/title sizing adapts on resize (keeps header visible and not cut)
-      function adjustLayout(){
-        const header = document.querySelector('header');
-        if(!header) return;
-        // On small screens, ensure container top padding so header doesn't overlap system UI
-        if(window.innerWidth <= 760){
-          document.querySelector('.container').style.marginTop = '6px';
-        } else {
-          document.querySelector('.container').style.marginTop = '';
-        }
+      // Ensure responsive title/header behavior
+      function toggleHelpers(){
+        const isMobile = window.innerWidth <= 760;
+        // nothing else needed here for now; kept for future tweaks
       }
-      window.addEventListener('load', adjustLayout);
-      window.addEventListener('resize', adjustLayout);
+      window.addEventListener('load', toggleHelpers);
+      window.addEventListener('resize', toggleHelpers);
     })();
   </script>
 </body>

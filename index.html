@@ -1,29 +1,162 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Slime Chunk Detector 日本語版</title>
+
+  <!-- ピクセルフォント（軽量） -->
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#0b2b17;
+      --panel:#0f3b1f;
+      --accent:#7bd389;
+      --accent-dark:#5fb36a;
+      --muted:#cfead6;
+      --card:#122f1b;
+      --shadow: rgba(0,0,0,0.6);
+    }
+    html,body{height:100%;margin:0;font-family: "Noto Sans JP", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;}
+    body{
+      background:
+        linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.45)),
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"><rect width="64" height="64" fill="%230b2b17"/><rect x="0" y="0" width="32" height="32" fill="%230f3b1f"/><rect x="32" y="32" width="32" height="32" fill="%230f3b1f"/></svg>') repeat;
+      color:var(--muted);
+      display:flex;align-items:center;justify-content:center;padding:32px;
+    }
+
+    .container{
+      width:100%;max-width:980px;background:linear-gradient(180deg,var(--panel),var(--card));
+      border:6px solid #0a2a12;border-radius:12px;box-shadow:0 12px 30px var(--shadow);overflow:hidden;
+    }
+
+    header{
+      display:flex;align-items:center;gap:16px;padding:20px 28px;background:linear-gradient(90deg,var(--accent),var(--accent-dark));
+      color:#07210f;
+    }
+    .logo{
+      width:72px;height:72px;background:linear-gradient(180deg,#fff,#ddd);
+      border-radius:8px;display:flex;align-items:center;justify-content:center;
+      font-family:'Press Start 2P', monospace;color:#0b2b17;font-size:12px;
+      box-shadow:inset 0 -6px 0 rgba(0,0,0,0.08);
+    }
+    header h1{font-family:'Press Start 2P', monospace;font-size:18px;margin:0;}
+    header p{margin:0;margin-left:auto;color:#07210f;font-size:12px;opacity:0.95;}
+
+    main{display:flex;gap:24px;padding:28px;flex-wrap:wrap;}
+    .left{flex:1;min-width:260px;}
+    .right{width:320px;min-width:260px;}
+
+    .card{background:rgba(255,255,255,0.02);padding:18px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);}
+    h2{font-family:'Press Start 2P', monospace;font-size:14px;margin:0 0 12px 0;color:var(--accent);}
+
+    .desc{line-height:1.6;color:var(--muted);font-size:14px;}
+    .features{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:12px;}
+    .feature{background:rgba(0,0,0,0.12);padding:8px;border-radius:6px;font-size:13px;color:#eaf7ea;}
+
+    .download{
+      display:flex;flex-direction:column;gap:12px;align-items:stretch;
+    }
+    .btn{
+      display:inline-block;padding:14px 18px;border-radius:8px;text-align:center;font-weight:700;
+      color:#07210f;background:var(--accent);text-decoration:none;font-family:'Press Start 2P',monospace;
+      box-shadow:0 6px 0 rgba(0,0,0,0.15);border:3px solid rgba(0,0,0,0.08);
+    }
+    .btn.secondary{background:transparent;color:var(--muted);border:2px dashed rgba(255,255,255,0.06);font-family:inherit;padding:10px 12px;font-weight:600;}
+
+    .meta{font-size:13px;color:#bfe9c9;}
+    .small{font-size:12px;color:#9fcfb0;}
+
+    footer{padding:14px 28px;background:linear-gradient(90deg,rgba(0,0,0,0.12),rgba(0,0,0,0.06));display:flex;gap:12px;align-items:center;}
+    footer .left{font-size:13px;color:#bfe9c9;}
+    footer .right{margin-left:auto;font-size:12px;color:#9fcfb0;}
+
+    @media(max-width:760px){
+      main{flex-direction:column;}
+      .right{width:100%;}
+    }
+  </style>
 </head>
 <body>
-  <h1>Slime Chunk Detector 日本語版</h1>
+  <div class="container">
+    <header>
+      <div class="logo">SLIME</div>
+      <div>
+        <h1>Slime Chunk Detector</h1>
+        <div class="small">日本語版 配布ページ</div>
+      </div>
+      <p>v1.0.0</p>
+    </header>
 
-  <p>このページでは、Slime Chunk Detector の日本語版を配布しています。</p>
+    <main>
+      <section class="left">
+        <div class="card">
+          <h2>概要</h2>
+          <p class="desc">
+            Slime Chunk Detector は Minecraft のスライムチャンクを判定するツールです。  
+            シングルプレイやサーバー運営でスライムスポーンを効率化したい方向けの軽量ツールです。
+          </p>
 
-  <h2>ダウンロード</h2>
-  <p>
-    最新版はこちらからダウンロードできます：<br>
-    <a href="https://github.com/sikuro0/slime-chunk-Detector-java-ja_jp/releases">
-      GitHub Releases（ダウンロードページ）
-    </a>
-  </p>
+          <h2>特徴</h2>
+          <div class="features">
+            <div class="feature">軽量 Java 実行ファイル</div>
+            <div class="feature">オフラインで動作</div>
+            <div class="feature">日本語対応</div>
+            <div class="feature">バージョン管理済み</div>
+          </div>
 
-  <h2>直接ダウンロード（例）</h2>
-  <p>
-    <a href="https://github.com/sikuro0/slime-chunk-Detector-java-ja_jp/releases/download/v1.0.0/SlimeChunkDetector.jar">
-      SlimeChunkDetector.jar をダウンロード
-    </a>
-  </p>
+          <h2 style="margin-top:14px">使い方</h2>
+          <ol class="small" style="line-height:1.7">
+            <li>Releases から最新版の JAR をダウンロード</li>
+            <li>Java が入っている環境で実行</li>
+            <li>座標を入力してスライムチャンクを確認</li>
+          </ol>
+        </div>
+      </section>
 
-  <p>※バージョン番号（v1.0.0）やファイル名はあなたのリリースに合わせて変更してください。</p>
+      <aside class="right">
+        <div class="card download">
+          <h2>ダウンロード</h2>
+
+          <!-- ここをあなたの Releases の直接ダウンロード URL に置き換える -->
+          <a id="downloadBtn" class="btn" href="https://github.com/sikuro0/slime-chunk-Detector-java-ja_jp/releases/tag/main" download>最新版をダウンロード</a>
+
+          <a class="btn secondary" href="https://github.com/sikuro0/slime-chunk-Detector-java-ja_jp/releases" target="_blank" rel="noopener">Releases ページを開く</a>
+
+          <div style="margin-top:8px" class="meta">
+            <div>ファイル形式: <strong>.jar</strong></div>
+            <div>サイズ: <span id="fileSize">—</span></div>
+            <div style="margin-top:8px" class="small">※ ダウンロードリンクはリリースのタグ名とファイル名に依存します。</div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:12px">
+          <h2>サポート</h2>
+          <p class="small">不具合報告や要望は Issues へお願いします。</p>
+          <p class="small"><a href="https://github.com/sikuro0/slime-chunk-Detector-java-ja_jp/issues" style="color:var(--muted)">Issue を作成する</a></p>
+        </div>
+      </aside>
+    </main>
+
+    <footer>
+      <div class="left">© 2026 sikuro0</div>
+      <div class="right">配布: GitHub Releases</div>
+    </footer>
+  </div>
+
+  <script>
+    // ダウンロードURLが置き換えられていない場合の注意表示
+    (function(){
+      const btn = document.getElementById('downloadBtn');
+      if(btn.href.endsWith('DOWNLOAD_URL')){
+        btn.textContent = 'ダウンロードリンクを設定してください';
+        btn.style.background = '#b34d4d';
+        btn.style.color = '#fff';
+        btn.href = '#';
+      }
+    })();
+  </script>
 </body>
 </html>

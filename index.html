@@ -61,12 +61,14 @@
       background: linear-gradient(90deg,var(--accent),var(--accent2));
       color:#042028;
       min-height:64px;
+      box-sizing:border-box;
     }
     .logo{
       width:64px;height:64px;background:var(--accent2);
       border-radius:8px;display:flex;align-items:center;justify-content:center;
       font-family:'Press Start 2P',monospace;color:#04210a;font-size:12px;flex-shrink:0;
     }
+    .title-block{display:flex;flex-direction:column;gap:4px}
     header h1{font-family:'Press Start 2P',monospace;font-size:18px;margin:0;line-height:1;}
     header .subtitle{font-size:12px;color:#042028;opacity:0.95}
     header .version{margin-left:auto;font-size:12px;color:#042028}
@@ -128,20 +130,14 @@
 </head>
 <body>
   <div class="container" role="main" aria-labelledby="page-title">
-    <!-- Header: desktop and mobile share same header but content adapts via CSS -->
+    <!-- Header: shared but content adapts -->
     <header>
       <div class="logo" aria-hidden="true">SLIME</div>
 
-      <!-- Desktop title block (desktop-only) -->
-      <div class="desktop-only" style="display:flex;flex-direction:column;">
+      <!-- Title block (shared) -->
+      <div class="title-block">
         <h1 id="page-title">Slime Chunk Detector</h1>
         <div class="subtitle">日本語版 配布ページ</div>
-      </div>
-
-      <!-- Mobile title block (mobile-only) - more compact -->
-      <div class="mobile-only" style="display:none;flex-direction:column;">
-        <h1 id="page-title-mobile" style="margin:0;font-size:15px">Slime Chunk Detector</h1>
-        <div class="subtitle" style="font-size:11px">日本語版 配布ページ</div>
       </div>
 
       <div class="version" aria-hidden="true">v1.0.0</div>
@@ -204,16 +200,9 @@
           <p class="desc"><strong>この実行ファイルについて</strong><br>
           このプログラムはシード値からスライムチャンクを判定する単機能ツールです。<strong>ネットワーク接続は行いません</strong>。ソースコードは GitHub リポジトリで公開しています。</p>
 
-          <h2 style="margin-top:8px">検証方法</h2>
-          <p class="small"><strong>SHA-256 チェックサム</strong>を公開しています。ダウンロード後にチェックサムを照合してください。</p>
-          <pre style="background:rgba(0,0,0,0.06);padding:8px;border-radius:6px;overflow:auto">SHA256: ここに実際のハッシュを貼ってください</pre>
-          <p class="small">Windows（PowerShell）: <code>Get-FileHash .\slime-chunk.exe -Algorithm SHA256</code></p>
-          <p class="small">Linux/macOS: <code>sha256sum slime-chunk.exe</code></p>
-
           <h2 style="margin-top:8px">SmartScreen が表示された場合の手順</h2>
           <ol class="small" style="line-height:1.6">
             <li><strong>ダウンロード元を確認</strong>：リンクが <code>github.com</code> の Releases であることを確認してください。</li>
-            <li><strong>チェックサムを照合</strong>：上の SHA-256 と一致することを確認します。</li>
             <li><strong>プロパティでブロック解除</strong>：ファイルを右クリック → <em>プロパティ</em> → 「ブロックの解除」にチェック → 適用。</li>
             <li><strong>SmartScreen の詳細から実行</strong>：警告画面で「詳細情報」→「実行」を選択して続行できます（自己責任で実行してください）。</li>
           </ol>
@@ -226,7 +215,7 @@
             <li>必要であれば、主要なウイルス対策ベンダーに誤検知の報告を行う（各社の誤検知報告フォームを利用）。</li>
           </ul>
 
-          <p class="small">当ソフトを実行する前に必ずチェックサムを確認してください。疑わしい点があれば実行を中止し、Issue でご相談ください。</p>
+          <p class="small">当ソフトを実行する前に疑わしい点があれば実行を中止し、Issue でご相談ください。</p>
         </div>
       </aside>
     </main>
@@ -254,14 +243,14 @@
         }
       }).catch(()=>{ /* ignore CORS errors */ });
 
-      // Ensure mobile/desktop title blocks are toggled correctly on load/resize
-      function toggleTitleBlocks(){
+      // Toggle any mobile/desktop specific UI if needed (keeps header/title consistent)
+      function toggleResponsiveHelpers(){
         const isMobile = window.innerWidth <= 760;
-        document.querySelectorAll('.desktop-only').forEach(el=>el.style.display = isMobile ? 'none' : 'flex');
-        document.querySelectorAll('.mobile-only').forEach(el=>el.style.display = isMobile ? 'flex' : 'none');
+        document.querySelectorAll('.desktop-only').forEach(el=>el.style.display = isMobile ? 'none' : 'block');
+        document.querySelectorAll('.mobile-only').forEach(el=>el.style.display = isMobile ? 'block' : 'none');
       }
-      window.addEventListener('load', toggleTitleBlocks);
-      window.addEventListener('resize', toggleTitleBlocks);
+      window.addEventListener('load', toggleResponsiveHelpers);
+      window.addEventListener('resize', toggleResponsiveHelpers);
     })();
   </script>
 </body>

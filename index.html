@@ -17,11 +17,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
   <style>
-    /* Reset & base */
+    /* Base reset */
     *,*::before,*::after{box-sizing:border-box}
-    html,body{height:100%;margin:0;font-family:"Noto Sans JP",system-ui,-apple-system,"Segoe UI",Roboto,Arial;}
+    html,body{height:100%;margin:0;font-family:"Noto Sans JP",system-ui,-apple-system,"Segoe UI",Roboto,Arial;background:#071428;color:#e6f7ff}
     :root{
-      --bg:#071428;
       --panel:#07263a;
       --card:#05202b;
       --accent:#2ea3ff;
@@ -31,61 +30,50 @@
       --shadow: rgba(0,0,0,0.45);
       --gap:18px;
       --container-padding:20px;
+      --max-width:980px;
     }
 
-    /* Safe area for notches (iOS) and prevent header cut */
+    /* Safe area and center */
     body{
-      background:linear-gradient(180deg, rgba(0,0,0,0.12), rgba(0,0,0,0.18)),var(--bg);
-      color:var(--muted);
       padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
-      display:flex;align-items:center;justify-content:center;padding-top:calc(env(safe-area-inset-top) + 12px);
+      display:flex;align-items:flex-start;justify-content:center;
+      background:linear-gradient(180deg, rgba(0,0,0,0.12), rgba(0,0,0,0.18)),var(--bg, #071428);
     }
 
     .container{
       width:100%;
-      max-width:980px;
+      max-width:var(--max-width);
+      margin:24px;
       background:linear-gradient(180deg,var(--panel),var(--card));
       border-radius:12px;
       box-shadow:0 12px 30px var(--shadow);
       overflow:hidden;
       border:2px solid rgba(255,255,255,0.03);
-      margin:var(--container-padding);
     }
 
-    /* Header common */
+    /* Header */
     header{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      padding:16px 20px;
-      background: linear-gradient(90deg,var(--accent),var(--accent2));
-      color:#042028;
-      min-height:64px;
-      box-sizing:border-box;
+      display:flex;align-items:center;gap:12px;padding:16px 20px;background:linear-gradient(90deg,var(--accent),var(--accent2));
+      color:#042028;min-height:64px;box-sizing:border-box;
     }
-    .logo{
-      width:64px;height:64px;background:var(--accent2);
-      border-radius:8px;display:flex;align-items:center;justify-content:center;
-      font-family:'Press Start 2P',monospace;color:#04210a;font-size:12px;flex-shrink:0;
-    }
+    .logo{width:64px;height:64px;background:var(--accent2);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Press Start 2P',monospace;color:#04210a;font-size:12px;flex-shrink:0}
     .title-block{display:flex;flex-direction:column;gap:4px}
-    header h1{font-family:'Press Start 2P',monospace;font-size:18px;margin:0;line-height:1;}
+    header h1{font-family:'Press Start 2P',monospace;font-size:18px;margin:0;line-height:1}
     header .subtitle{font-size:12px;color:#042028;opacity:0.95}
     header .version{margin-left:auto;font-size:12px;color:#042028}
 
-    /* Layout */
-    main{display:flex;gap:20px;padding:20px;flex-wrap:wrap;}
-    .left{flex:1;min-width:260px;}
-    .right{width:320px;min-width:220px;}
+    /* Main layout */
+    main{display:flex;gap:20px;padding:20px;flex-wrap:wrap}
+    .left{flex:1;min-width:260px}
+    .right{width:320px;min-width:220px}
 
-    .card{background:rgba(255,255,255,0.02);padding:14px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);}
-    h2{font-family:'Press Start 2P',monospace;font-size:13px;margin:0 0 10px 0;color:var(--accent);}
+    .card{background:rgba(255,255,255,0.02);padding:14px;border-radius:8px;border:1px solid rgba(255,255,255,0.03)}
+    h2{font-family:'Press Start 2P',monospace;font-size:13px;margin:0 0 10px 0;color:var(--accent)}
+    .desc{line-height:1.6;color:var(--muted);font-size:14px}
+    .features{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:10px}
+    .feature{background:rgba(255,255,255,0.02);padding:8px;border-radius:6px;font-size:13px;color:var(--muted);border:1px solid rgba(255,255,255,0.02)}
 
-    .desc{line-height:1.6;color:var(--muted);font-size:14px;}
-    .features{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:10px;}
-    .feature{background:rgba(255,255,255,0.02);padding:8px;border-radius:6px;font-size:13px;color:var(--muted);border:1px solid rgba(255,255,255,0.02);}
-
-    .download{display:flex;flex-direction:column;gap:10px;align-items:stretch;}
+    .download{display:flex;flex-direction:column;gap:10px;align-items:stretch}
     .btn{display:inline-block;padding:12px 14px;border-radius:8px;text-align:center;font-weight:700;color:#042028;background:var(--accent);text-decoration:none;font-family:'Press Start 2P',monospace;border:0}
     .btn.secondary{background:var(--accent2);color:#042028;padding:10px 12px;font-weight:700;text-decoration:none;text-align:center;border:0}
 
@@ -96,31 +84,24 @@
     footer .left{font-size:13px;color:var(--muted-2)}
     footer .right{margin-left:auto;font-size:12px;color:#9fcfb0}
 
-    /* Desktop-only / Mobile-only helpers */
-    .desktop-only{display:block}
-    .mobile-only{display:none}
-
-    /* Mobile adjustments and separate layout */
+    /* Mobile-specific: header sticky, compact spacing, single-column layout */
     @media (max-width: 760px){
-      header{padding:12px 14px;gap:10px;min-height:56px}
+      .container{margin:8px;border-radius:10px}
+      header{padding:12px 14px;gap:10px;min-height:56px;position:sticky;top:0;z-index:30}
       .logo{width:52px;height:52px;font-size:10px}
       header h1{font-size:15px}
       header .version{font-size:11px}
-      main{padding:14px;gap:12px}
+      main{padding:14px;gap:12px;flex-direction:column}
       .right{width:100%}
-      .features{grid-template-columns:repeat(1,1fr)}
+      .features{grid-template-columns:1fr}
       .card{padding:12px}
-      .desktop-only{display:none}
-      .mobile-only{display:block}
-      /* Make header sticky on mobile to avoid being scrolled off-screen */
-      header{position:sticky;top:0;z-index:20}
-      /* Ensure container content doesn't hide under sticky header */
-      .container{padding-top:0}
     }
 
-    /* Larger desktop tweaks */
+    /* Desktop-specific: slightly wider right column and two-column features */
     @media (min-width: 1200px){
-      .container{max-width:1100px}
+      :root{--max-width:1100px}
+      .right{width:360px}
+      .features{grid-template-columns:repeat(2,1fr)}
       header h1{font-size:20px}
     }
 
@@ -130,16 +111,12 @@
 </head>
 <body>
   <div class="container" role="main" aria-labelledby="page-title">
-    <!-- Header: shared but content adapts -->
     <header>
       <div class="logo" aria-hidden="true">SLIME</div>
-
-      <!-- Title block (shared) -->
       <div class="title-block">
         <h1 id="page-title">Slime Chunk Detector</h1>
         <div class="subtitle">日本語版 配布ページ</div>
       </div>
-
       <div class="version" aria-hidden="true">v1.0.0</div>
     </header>
 
@@ -147,9 +124,7 @@
       <section class="left">
         <div class="card" aria-labelledby="overview-title">
           <h2 id="overview-title">概要</h2>
-          <p class="desc">
-            Slime Chunk Detector は Minecraft のスライムチャンクを判定するツールです。シングルプレイやサーバーで使用可能で、バージョン指定や結果の保存が可能です。
-          </p>
+          <p class="desc">Slime Chunk Detector は Minecraft のスライムチャンクを判定するツールです。シングルプレイやサーバーで使用可能で、バージョン指定や結果の保存が可能です。</p>
 
           <h2>特徴</h2>
           <div class="features" role="list">
@@ -174,7 +149,6 @@
         <div class="card download" id="download-block">
           <h2 id="download-title">ダウンロード</h2>
 
-          <!-- Releases の実際のダウンロード URL を href に置き、download 属性で保存名を指定 -->
           <a id="downloadBtn" class="btn"
              href="https://github.com/sikuro0/slime-chunk-Detector-java-ja_jp/releases/download/main/slime-chunk.exe"
              download="slime-chunk.exe" aria-label="最新版をダウンロード">最新版をダウンロード</a>
@@ -210,12 +184,12 @@
           <h2 style="margin-top:8px">ウイルス対策ソフトの誤検知への対応</h2>
           <p class="small">誤検知が出た場合は以下を推奨します。</p>
           <ul class="small" style="line-height:1.6">
-            <li>VirusTotal にファイルをアップロードしてスキャン結果を確認し、問題がないことを示すリンクをページに掲載する。</li>
-            <li>ソースコードを公開している場合はビルド手順を示し、ユーザーが自分でビルドできることを案内する。</li>
-            <li>必要であれば、主要なウイルス対策ベンダーに誤検知の報告を行う（各社の誤検知報告フォームを利用）。</li>
+            <li>VirusTotal にファイルをアップロードしてスキャン結果を確認する。</li>
+            <li>ソースコードを確認し、問題がないことを示す。</li>
+            <li>必要であれば主要ベンダーに誤検知を報告する。</li>
           </ul>
 
-          <p class="small">当ソフトを実行する前に疑わしい点があれば実行を中止し、Issue でご相談ください。</p>
+          <p class="small">疑わしい点があれば実行を中止し、Issue でご相談ください。</p>
         </div>
       </aside>
     </main>
@@ -227,30 +201,34 @@
   </div>
 
   <script>
-    // Basic: set fileSize if Releases provides Content-Length via HEAD (best-effort)
     (function(){
+      // Try to fetch file size (best-effort; may be blocked by CORS)
       const fileUrl = document.getElementById('downloadBtn')?.href;
       const fileSizeEl = document.getElementById('fileSize');
-      if(!fileUrl || !fileSizeEl) return;
-
-      // Try a HEAD request to get content-length (may be blocked by CORS on GitHub)
-      fetch(fileUrl, { method: 'HEAD' }).then(resp=>{
-        const len = resp.headers.get('content-length');
-        if(len){
-          const size = Number(len);
-          const human = size >= 1e6 ? (size/1e6).toFixed(2)+' MB' : (size/1024).toFixed(1)+' KB';
-          fileSizeEl.textContent = human;
-        }
-      }).catch(()=>{ /* ignore CORS errors */ });
-
-      // Toggle any mobile/desktop specific UI if needed (keeps header/title consistent)
-      function toggleResponsiveHelpers(){
-        const isMobile = window.innerWidth <= 760;
-        document.querySelectorAll('.desktop-only').forEach(el=>el.style.display = isMobile ? 'none' : 'block');
-        document.querySelectorAll('.mobile-only').forEach(el=>el.style.display = isMobile ? 'block' : 'none');
+      if(fileUrl && fileSizeEl){
+        fetch(fileUrl, { method: 'HEAD' }).then(resp=>{
+          const len = resp.headers.get('content-length');
+          if(len){
+            const size = Number(len);
+            const human = size >= 1e6 ? (size/1e6).toFixed(2)+' MB' : (size/1024).toFixed(1)+' KB';
+            fileSizeEl.textContent = human;
+          }
+        }).catch(()=>{ /* ignore CORS */ });
       }
-      window.addEventListener('load', toggleResponsiveHelpers);
-      window.addEventListener('resize', toggleResponsiveHelpers);
+
+      // Ensure header/title sizing adapts on resize (keeps header visible and not cut)
+      function adjustLayout(){
+        const header = document.querySelector('header');
+        if(!header) return;
+        // On small screens, ensure container top padding so header doesn't overlap system UI
+        if(window.innerWidth <= 760){
+          document.querySelector('.container').style.marginTop = '6px';
+        } else {
+          document.querySelector('.container').style.marginTop = '';
+        }
+      }
+      window.addEventListener('load', adjustLayout);
+      window.addEventListener('resize', adjustLayout);
     })();
   </script>
 </body>

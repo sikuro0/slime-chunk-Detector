@@ -2,127 +2,149 @@
 <html lang="ja">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-
-  <!-- 基本メタ -->
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <title>Slime Chunk Detector 日本語版 - ダウンロード</title>
   <meta name="description" content="Minecraft用のスライムチャンク判定ツール「Slime Chunk Detector」日本語版。オフラインで動作する軽量実行ファイルをGitHub Releasesからダウンロードできます。">
   <meta name="keywords" content="Minecraft, スライムチャンク, Slime Chunk Detector, スライム, ダウンロード, 日本語">
   <meta name="robots" content="index,follow">
-
-  <!-- Open Graph (SNSでの表示改善) -->
   <meta property="og:title" content="Slime Chunk Detector 日本語版 - ダウンロード">
   <meta property="og:description" content="Minecraft用のスライムチャンク判定ツール。オフラインで動作する軽量実行ファイルをGitHub Releasesからダウンロードできます。">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://sikuro0.github.io/slime-chunk-Detector-java-ja_jp/">
   <meta property="og:site_name" content="Slime Chunk Detector 日本語版">
-
-  <!-- Twitter Card -->
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Slime Chunk Detector 日本語版 - ダウンロード">
-  <meta name="twitter:description" content="Minecraft用のスライムチャンク判定ツール。オフラインで動作する軽量実行ファイルをGitHub Releasesからダウンロードできます。">
-
-  <!-- 正規URL -->
   <link rel="canonical" href="https://sikuro0.github.io/slime-chunk-Detector-java-ja_jp/">
-
-  <!-- ピクセルフォント（軽量） -->
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
   <style>
+    /* Reset & base */
+    *,*::before,*::after{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:"Noto Sans JP",system-ui,-apple-system,"Segoe UI",Roboto,Arial;}
     :root{
-      --bg:#071428;           /* 深いネイビーブルー */
-      --panel:#07263a;        /* 暗めのパネル色 */
-      --card:#05202b;         /* カード背景 */
-      --accent:#2ea3ff;       /* 鮮やかな青 */
-      --accent2:#b7ff6a;      /* 鮮やかな黄緑 */
-      --muted:#e6f7ff;        /* 明るめのテキスト */
+      --bg:#071428;
+      --panel:#07263a;
+      --card:#05202b;
+      --accent:#2ea3ff;
+      --accent2:#b7ff6a;
+      --muted:#e6f7ff;
       --muted-2:#cfead6;
       --shadow: rgba(0,0,0,0.45);
+      --gap:18px;
+      --container-padding:20px;
     }
-    html,body{height:100%;margin:0;font-family: "Noto Sans JP", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;}
+
+    /* Safe area for notches (iOS) and prevent header cut */
     body{
-      background:
-        linear-gradient(180deg, rgba(0,0,0,0.12), rgba(0,0,0,0.18)),
-        var(--bg);
+      background:linear-gradient(180deg, rgba(0,0,0,0.12), rgba(0,0,0,0.18)),var(--bg);
       color:var(--muted);
-      display:flex;align-items:center;justify-content:center;padding:20px;
+      padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+      display:flex;align-items:center;justify-content:center;padding-top:calc(env(safe-area-inset-top) + 12px);
     }
 
     .container{
-      width:100%;max-width:980px;background:linear-gradient(180deg,var(--panel),var(--card));
-      border-radius:12px;box-shadow:0 12px 30px var(--shadow);overflow:hidden;border:2px solid rgba(255,255,255,0.03);
+      width:100%;
+      max-width:980px;
+      background:linear-gradient(180deg,var(--panel),var(--card));
+      border-radius:12px;
+      box-shadow:0 12px 30px var(--shadow);
+      overflow:hidden;
+      border:2px solid rgba(255,255,255,0.03);
+      margin:var(--container-padding);
     }
 
+    /* Header common */
     header{
-      display:flex;align-items:center;gap:12px;padding:14px 18px;
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:16px 20px;
+      background: linear-gradient(90deg,var(--accent),var(--accent2));
       color:#042028;
-      box-sizing:border-box;
+      min-height:64px;
     }
     .logo{
-      width:60px;height:60px;background:var(--accent2);
+      width:64px;height:64px;background:var(--accent2);
       border-radius:8px;display:flex;align-items:center;justify-content:center;
-      font-family:'Press Start 2P', monospace;color:#04210a;font-size:11px;
-      box-shadow: none;
-      flex-shrink:0;
+      font-family:'Press Start 2P',monospace;color:#04210a;font-size:12px;flex-shrink:0;
     }
-    header h1{font-family:'Press Start 2P', monospace;font-size:16px;margin:0;color:#042028;line-height:1;}
-    header p{margin:0;margin-left:auto;color:#042028;font-size:12px;opacity:0.95;}
+    header h1{font-family:'Press Start 2P',monospace;font-size:18px;margin:0;line-height:1;}
+    header .subtitle{font-size:12px;color:#042028;opacity:0.95}
+    header .version{margin-left:auto;font-size:12px;color:#042028}
 
-    main{display:flex;gap:16px;padding:18px;flex-wrap:wrap;box-sizing:border-box;}
-    .left{flex:1;min-width:220px;}
+    /* Layout */
+    main{display:flex;gap:20px;padding:20px;flex-wrap:wrap;}
+    .left{flex:1;min-width:260px;}
     .right{width:320px;min-width:220px;}
 
-    .card{background:rgba(255,255,255,0.02);padding:14px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);box-sizing:border-box;}
-    h2{font-family:'Press Start 2P', monospace;font-size:13px;margin:0 0 10px 0;color:var(--accent);}
+    .card{background:rgba(255,255,255,0.02);padding:14px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);}
+    h2{font-family:'Press Start 2P',monospace;font-size:13px;margin:0 0 10px 0;color:var(--accent);}
 
     .desc{line-height:1.6;color:var(--muted);font-size:14px;}
     .features{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:10px;}
     .feature{background:rgba(255,255,255,0.02);padding:8px;border-radius:6px;font-size:13px;color:var(--muted);border:1px solid rgba(255,255,255,0.02);}
 
-    .download{
-      display:flex;flex-direction:column;gap:10px;align-items:stretch;
+    .download{display:flex;flex-direction:column;gap:10px;align-items:stretch;}
+    .btn{display:inline-block;padding:12px 14px;border-radius:8px;text-align:center;font-weight:700;color:#042028;background:var(--accent);text-decoration:none;font-family:'Press Start 2P',monospace;border:0}
+    .btn.secondary{background:var(--accent2);color:#042028;padding:10px 12px;font-weight:700;text-decoration:none;text-align:center;border:0}
+
+    .meta{font-size:13px;color:var(--muted-2)}
+    .small{font-size:12px;color:#bfe9c9}
+
+    footer{padding:10px 16px;background:linear-gradient(90deg,rgba(0,0,0,0.06),rgba(0,0,0,0.03));display:flex;gap:12px;align-items:center}
+    footer .left{font-size:13px;color:var(--muted-2)}
+    footer .right{margin-left:auto;font-size:12px;color:#9fcfb0}
+
+    /* Desktop-only / Mobile-only helpers */
+    .desktop-only{display:block}
+    .mobile-only{display:none}
+
+    /* Mobile adjustments and separate layout */
+    @media (max-width: 760px){
+      header{padding:12px 14px;gap:10px;min-height:56px}
+      .logo{width:52px;height:52px;font-size:10px}
+      header h1{font-size:15px}
+      header .version{font-size:11px}
+      main{padding:14px;gap:12px}
+      .right{width:100%}
+      .features{grid-template-columns:repeat(1,1fr)}
+      .card{padding:12px}
+      .desktop-only{display:none}
+      .mobile-only{display:block}
+      /* Make header sticky on mobile to avoid being scrolled off-screen */
+      header{position:sticky;top:0;z-index:20}
+      /* Ensure container content doesn't hide under sticky header */
+      .container{padding-top:0}
     }
-    .btn{
-      display:inline-block;padding:12px 14px;border-radius:8px;text-align:center;font-weight:700;
-      color:#042028;background:var(--accent);text-decoration:none;font-family:'Press Start 2P',monospace;
-      box-shadow:none;border:0;
+
+    /* Larger desktop tweaks */
+    @media (min-width: 1200px){
+      .container{max-width:1100px}
+      header h1{font-size:20px}
     }
-    .btn.secondary{background:var(--accent2);color:#042028;border:0;padding:10px 12px;font-weight:700;font-family:inherit;text-decoration:none;text-align:center;}
 
-    .meta{font-size:13px;color:var(--muted-2);}
-    .small{font-size:12px;color:#bfe9c9;}
-
-    footer{padding:10px 16px;background:linear-gradient(90deg,rgba(0,0,0,0.06),rgba(0,0,0,0.03));display:flex;gap:12px;align-items:center;}
-    footer .left{font-size:13px;color:var(--muted-2);}
-    footer .right{margin-left:auto;font-size:12px;color:#9fcfb0;}
-
-    /* フラットで鮮やかな見た目にするための微調整 */
-    .logo, .btn, .btn.secondary { transition: transform .08s ease; }
-    .btn:hover { transform: translateY(-2px); filter:brightness(1.03); }
-    .btn.secondary:hover { transform: translateY(-2px); filter:brightness(1.03); }
-
-    /* スマホで上部が切れる問題を防ぐ */
-    @media(max-width:760px){
-      body{padding:12px;}
-      header{padding:12px 14px;}
-      .logo{width:52px;height:52px;font-size:10px;}
-      header h1{font-size:14px;}
-      main{padding:14px;}
-      .container{border-radius:10px;}
-      .right{width:100%;}
-    }
+    /* Accessibility focus */
+    a:focus{outline:3px solid rgba(255,255,255,0.12);outline-offset:2px}
   </style>
 </head>
 <body>
   <div class="container" role="main" aria-labelledby="page-title">
+    <!-- Header: desktop and mobile share same header but content adapts via CSS -->
     <header>
       <div class="logo" aria-hidden="true">SLIME</div>
-      <div>
+
+      <!-- Desktop title block (desktop-only) -->
+      <div class="desktop-only" style="display:flex;flex-direction:column;">
         <h1 id="page-title">Slime Chunk Detector</h1>
-        <div class="small">日本語版 配布ページ</div>
+        <div class="subtitle">日本語版 配布ページ</div>
       </div>
-      <p>v1.0.0</p>
+
+      <!-- Mobile title block (mobile-only) - more compact -->
+      <div class="mobile-only" style="display:none;flex-direction:column;">
+        <h1 id="page-title-mobile" style="margin:0;font-size:15px">Slime Chunk Detector</h1>
+        <div class="subtitle" style="font-size:11px">日本語版 配布ページ</div>
+      </div>
+
+      <div class="version" aria-hidden="true">v1.0.0</div>
     </header>
 
     <main>
@@ -130,18 +152,17 @@
         <div class="card" aria-labelledby="overview-title">
           <h2 id="overview-title">概要</h2>
           <p class="desc">
-            Slime Chunk Detector は Minecraft のスライムチャンクを判定するツールです。  
-            シングルプレイやサーバーで使用可能です。また、バージョン指定も可能です。
+            Slime Chunk Detector は Minecraft のスライムチャンクを判定するツールです。シングルプレイやサーバーで使用可能で、バージョン指定や結果の保存が可能です。
           </p>
 
           <h2>特徴</h2>
           <div class="features" role="list">
             <div class="feature" role="listitem">軽量 実行ファイル</div>
             <div class="feature" role="listitem">オフラインで動作</div>
-            <div class="feature" role="listitem">日本語のみ対応</div>
+            <div class="feature" role="listitem">日本語対応</div>
             <div class="feature" role="listitem">バージョン管理済み</div>
             <div class="feature" role="listitem">ゲームバージョン指定可能</div>
-            <div class="feature" role="listitem">発見した箇所をtxtで保存可能</div>
+            <div class="feature" role="listitem">発見箇所をtxtで保存可能</div>
           </div>
 
           <h2 style="margin-top:12px">使い方</h2>
@@ -177,7 +198,6 @@
           <p class="small"><a href="https://github.com/sikuro0/slime-chunk-Detector-java-ja_jp/issues" style="color:var(--muted)">Issue を作成する</a></p>
         </div>
 
-        <!-- ここから SmartScreen とウイルス対策の案内を追加 -->
         <div class="card" style="margin-top:12px" aria-labelledby="safety-title">
           <h2 id="safety-title">実行ファイルの安全性と警告への対処</h2>
 
@@ -206,10 +226,8 @@
             <li>必要であれば、主要なウイルス対策ベンダーに誤検知の報告を行う（各社の誤検知報告フォームを利用）。</li>
           </ul>
 
-          <h2 style="margin-top:8px">簡潔な注意書き</h2>
           <p class="small">当ソフトを実行する前に必ずチェックサムを確認してください。疑わしい点があれば実行を中止し、Issue でご相談ください。</p>
         </div>
-        <!-- ここまで案内 -->
       </aside>
     </main>
 
@@ -220,33 +238,30 @@
   </div>
 
   <script>
-    // ダウンロードURLが置き換えられていない場合の注意表示
+    // Basic: set fileSize if Releases provides Content-Length via HEAD (best-effort)
     (function(){
-      const btn = document.getElementById('downloadBtn');
-      if(!btn || btn.href.includes('DOWNLOAD_URL') || btn.href.endsWith('#') || btn.href.indexOf('github.com') === -1){
-        if(btn){
-          btn.textContent = 'ダウンロードリンクを設定してください';
-          btn.style.background = '#b34d4d';
-          btn.style.color = '#fff';
-          btn.href = '#';
-        }
-      }
+      const fileUrl = document.getElementById('downloadBtn')?.href;
+      const fileSizeEl = document.getElementById('fileSize');
+      if(!fileUrl || !fileSizeEl) return;
 
-      // モバイルでヘッダーが切れる問題をさらに防ぐために
-      // ページ読み込み時にヘッダーの高さ分だけボディ上部に余白を確保
-      function adjustForMobileHeader(){
-        const header = document.querySelector('header');
-        if(!header) return;
-        const rect = header.getBoundingClientRect();
-        // スマホで表示が切れる場合に備え、コンテナの上マージンを調整
-        if(window.innerWidth <= 760){
-          document.querySelector('.container').style.marginTop = (rect.height * 0.1) + 'px';
-        } else {
-          document.querySelector('.container').style.marginTop = '0';
+      // Try a HEAD request to get content-length (may be blocked by CORS on GitHub)
+      fetch(fileUrl, { method: 'HEAD' }).then(resp=>{
+        const len = resp.headers.get('content-length');
+        if(len){
+          const size = Number(len);
+          const human = size >= 1e6 ? (size/1e6).toFixed(2)+' MB' : (size/1024).toFixed(1)+' KB';
+          fileSizeEl.textContent = human;
         }
+      }).catch(()=>{ /* ignore CORS errors */ });
+
+      // Ensure mobile/desktop title blocks are toggled correctly on load/resize
+      function toggleTitleBlocks(){
+        const isMobile = window.innerWidth <= 760;
+        document.querySelectorAll('.desktop-only').forEach(el=>el.style.display = isMobile ? 'none' : 'flex');
+        document.querySelectorAll('.mobile-only').forEach(el=>el.style.display = isMobile ? 'flex' : 'none');
       }
-      window.addEventListener('load', adjustForMobileHeader);
-      window.addEventListener('resize', adjustForMobileHeader);
+      window.addEventListener('load', toggleTitleBlocks);
+      window.addEventListener('resize', toggleTitleBlocks);
     })();
   </script>
 </body>

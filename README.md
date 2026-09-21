@@ -74,5 +74,7 @@ https://github.com/sikuro0/slime-chunk-Detector-java-ja_jp/issues
 
 ---
 
+## 📄 ライセンス
+このプロジェクトは **MIT License** のもとで公開されています。
 ## © 2026 sikuro0
 配布：GitHub Releases  

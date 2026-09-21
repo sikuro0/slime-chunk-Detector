@@ -13,7 +13,7 @@ Minecraft の **スライムチャンクを判定するツール**です。
 ## 📥 ダウンロード
 最新版のダウンロードはこちら：
 
-👉 **[最新版をダウンロード]([https://github.com/sikuro0/slime-chunk-Detector-java-ja_jp/releases/latest](https://github.com/sikuro0/slime-chunk-Detector-java-ja_jp/releases/download/main2/slime-chunk.exe))**  
+👉 **[最新版をダウンロード](https://github.com/sikuro0/slime-chunk-Detector-java-ja_jp/releases/download/main2/slime-chunk.exe)**  
 👉 **[Releases 一覧を見る](https://github.com/sikuro0/slime-chunk-Detector-java-ja_jp/releases)**
 
 ---

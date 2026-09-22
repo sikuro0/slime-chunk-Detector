@@ -61,7 +61,7 @@ Windows の SmartScreen は「新しい実行ファイル」に対して警告�
 ## 🛠 ソースコード
 ソースコードはこちら：
 
-🔗 **https://github.com/sikuro0/slime-chunk-Detector-java-ja_jp**
+🔗 **https://github.com/sikuro0/slime-chunk-Detector/**
 
 ---
 
@@ -69,7 +69,7 @@ Windows の SmartScreen は「新しい実行ファイル」に対して警告�
 不具合報告や要望はこちらへ：
 
 👉 **Issues を作成する**  
-https://github.com/sikuro0/slime-chunk-Detector-java-ja_jp/issues
+https://github.com/sikuro0/slime-chunk-Detector/issues/
 
 ---
 

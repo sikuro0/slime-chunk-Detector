@@ -21,7 +21,7 @@ Minecraft の **スライムチャンクを判定するツール**です。
 ## 🌐 配布ページ（GitHub Pages）
 Web 版の配布ページはこちら：
 
-🔗 **https://sikuro0.github.io/slime-chunk-Detector-java-ja_jp/**
+🔗 **https://sikuro0.github.io/slime-chunk-Detector/**
 
 ---
 

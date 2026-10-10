@@ -243,15 +243,39 @@
           </details>
 
           <details class="acc-item">
-            <summary class="acc-summary">SmartScreen が表示された場合の手順</summary>
-            <div class="acc-body">
-              <ol class="small" style="line-height:1.6">
-                <li><strong>ダウンロード元を確認</strong>：リンクが <span class="inline-code">github.com</span> の Releases であることを確認してください。</li>
-                <li><strong>プロパティでブロック解除</strong>：ファイルを右クリック → <em>プロパティ</em> → 「ブロックの解除」にチェック → 適用。</li>
-                <li><strong>SmartScreen の詳細から実行</strong>：警告画面で「詳細情報」→「実行」を選択して続行できます（自己責任で実行してください）。</li>
-              </ol>
-            </div>
-          </details>
+  <summary class="acc-summary">Smart App Control（スマートアプリコントロール）の回避方法</summary>
+  <div class="acc-body">
+    <p class="small">
+      Windows 11 の Smart App Control は、署名されていない実行ファイルをブロックすることがあります。  
+      以下の手順で実行を許可できます。
+    </p>
+    <ol class="small" style="line-height:1.6">
+      <li>「Windows セキュリティ」を開く</li>
+      <li>「アプリとブラウザー コントロール」を選択</li>
+      <li>「Smart App Control の設定」を開く</li>
+      <li>「オフ」に切り替える（再起動が必要）</li>
+    </ol>
+    <p class="small">※ Smart App Control は Windows の保護機能のため、自己責任で設定してください。</p>
+  </div>
+</details>
+
+<details class="acc-item">
+  <summary class="acc-summary">Windows セキュリティの除外設定</summary>
+  <div class="acc-body">
+    <p class="small">
+      ウイルスと脅威の防止でこの exe が誤検知される場合、以下の手順で除外できます。
+    </p>
+    <ol class="small" style="line-height:1.6">
+      <li>「Windows セキュリティ」を開く</li>
+      <li>「ウイルスと脅威の防止」を選択</li>
+      <li>「設定の管理」をクリック</li>
+      <li>「除外の追加または削除」を選択</li>
+      <li>「除外の追加」→「ファイル」から <strong>slime-chunk.exe</strong> を指定</li>
+    </ol>
+    <p class="small">※ 除外設定はセキュリティを弱める可能性があるため、必要な場合のみ設定してください。</p>
+  </div>
+</details>
+
 
           <details class="acc-item">
             <summary class="acc-summary">ウイルス対策ソフトの誤検知への対処</summary>

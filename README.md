@@ -77,7 +77,7 @@ Windows 11 の Smart App Control は、署名されていない実行ファイ�
 ## 🛠 ソースコード
 ソースコードはこちら：
 
-🔗 **https://github.com/sikuro0/slime-chunk-Detector/**
+🔗 **https://github.com/sikuro0/slime-chunk-Detector/tree/main/src**
 
 ---
 

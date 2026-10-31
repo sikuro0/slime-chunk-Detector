@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>スライムチャンク 3×3 ファインダー</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700&display=swap">
+<style>
+:root {
+  --bg: #e9f0df;
+  --surface: #f8fbf3;
+  --ink: #1b2a1a;
+  --muted: #566650;
+  --line: #c6d4b8;
+  --slime: #5cc23c;
+  --slime-ink: #10230b;
+  --deep: #2d6a34;
+  --cell-off: #dbe5cf;
+  --focus: #1c6fd1;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f150e; --surface: #172015; --ink: #e3eedb; --muted: #94a88b;
+    --line: #2b3a28; --slime: #7be05a; --slime-ink: #0d1b09; --deep: #8fd67b;
+    --cell-off: #202c1d; --focus: #6fb0ff;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f150e; --surface: #172015; --ink: #e3eedb; --muted: #94a88b;
+  --line: #2b3a28; --slime: #7be05a; --slime-ink: #0d1b09; --deep: #8fd67b;
+  --cell-off: #202c1d; --focus: #6fb0ff;
+}
+html { height: 100%; scroll-padding-top: env(safe-area-inset-top, 0px); }
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  margin: 0; min-height: 100%;
+  background: var(--bg); color: var(--ink);
+  font-family: "Zen Maru Gothic", "Hiragino Maru Gothic ProN", "Hiragino Sans", "Yu Gothic", Meiryo, sans-serif;
+  line-height: 1.7; font-size: 16px;
+}
+main { max-width: 760px; margin: 0 auto; padding: 32px 20px 64px; }
+header { display: flex; gap: 20px; align-items: center; margin-bottom: 28px; }
+.mark { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; width: 72px; height: 72px; flex: none; }
+.mark i { background: var(--slime); border-radius: 30%; }
+.mark i:nth-child(2n) { border-radius: 50%; }
+h1 { margin: 0; font-size: clamp(1.5rem, 5vw, 2.1rem); line-height: 1.25; font-weight: 700; letter-spacing: 0.01em; }
+header p { margin: 6px 0 0; color: var(--muted); font-size: 0.95rem; }
+
+form { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 20px; display: grid; gap: 16px; }
+.row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+label { display: grid; gap: 4px; font-size: 0.9rem; font-weight: 500; }
+label small { font-weight: 400; color: var(--muted); }
+input[type="text"], input[type="number"], select {
+  width: 100%; font: inherit; font-variant-numeric: tabular-nums;
+  padding: 10px 12px; border-radius: 8px; border: 1px solid var(--line);
+  background: var(--bg); color: var(--ink);
+}
+input:focus-visible, button:focus-visible, a:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.check { display: flex; align-items: center; gap: 8px; font-weight: 400; }
+.check input { width: 18px; height: 18px; accent-color: var(--deep); }
+.actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+button, .btn {
+  font: inherit; font-weight: 700; cursor: pointer; text-decoration: none;
+  padding: 10px 20px; border-radius: 999px; border: 1px solid var(--line);
+  background: var(--surface); color: var(--ink);
+}
+button.primary { background: var(--slime); color: var(--slime-ink); border-color: transparent; }
+button.primary:hover { filter: brightness(1.06); }
+button:disabled { opacity: 0.45; cursor: not-allowed; }
+.est { color: var(--muted); font-size: 0.85rem; }
+
+.progress { margin: 20px 0 4px; display: none; }
+.progress.on { display: block; }
+.bar { height: 8px; background: var(--cell-off); border-radius: 999px; overflow: hidden; }
+.bar > div { height: 100%; width: 0; background: var(--slime); transition: width 0.15s linear; }
+#status { margin: 6px 0 0; font-size: 0.9rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+.results-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; margin: 28px 0 8px; }
+.results-head h2 { margin: 0; font-size: 1.15rem; }
+.results-head button { padding: 6px 14px; font-size: 0.85rem; }
+ol { list-style: none; margin: 0; padding: 0; }
+.res { display: flex; gap: 16px; padding: 16px 0; border-top: 1px solid var(--line); align-items: flex-start; }
+.res:last-child { border-bottom: 1px solid var(--line); }
+.res canvas { flex: none; width: 110px; height: 110px; border-radius: 6px; }
+.coord { font-size: 1.25rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.sub { color: var(--muted); font-size: 0.88rem; font-variant-numeric: tabular-nums; margin-top: 2px; }
+.tag { display: inline-block; font-size: 0.8rem; font-weight: 700; padding: 1px 10px; border-radius: 999px; margin-right: 6px; }
+.tag.iso { background: var(--slime); color: var(--slime-ink); }
+.tag.adj { background: var(--cell-off); color: var(--muted); }
+.acts { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+.acts button, .acts a { padding: 5px 14px; font-size: 0.85rem; }
+.empty { color: var(--muted); padding: 20px 0; }
+.note { margin-top: 32px; color: var(--muted); font-size: 0.85rem; }
+.note li { margin-bottom: 4px; }
+.note ul { padding-left: 1.2em; margin: 6px 0 0; }
+.err { color: #b3261e; font-size: 0.9rem; margin: 0; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .err { color: #ff9c92; } }
+:root[data-theme="dark"] .err { color: #ff9c92; }
+@media (max-width: 560px) {
+  .row { grid-template-columns: 1fr; }
+  .res { flex-direction: column; }
+}
+@media (prefers-reduced-motion: reduce) { .bar > div { transition: none; } }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    <div>
+      <h1>スライムチャンク 3×3 ファインダー</h1>
+      <p>シード値を入れると、3×3のスライムチャンクを探します（Java版）</p>
+    </div>
+  </header>
+
+  <form id="form" autocomplete="off" onsubmit="return false">
+    <label>シード値
+      <input type="text" id="seed" inputmode="numeric" placeholder="例：70392165441118850" value="70392165441118850">
+      <small>数字のシード、または文字列のシードを入力できます</small>
+    </label>
+    <label>Javaバージョン
+      <select id="ver">
+        <option value="26_3" selected>Java 26.3</option>
+        <option value="26_2">Java 26.2</option>
+        <option value="26_1">Java 26.1</option>
+        <option value="1_21_9">Java 1.21.9 - 1.21.11</option>
+        <option value="1_21_6">Java 1.21.6 - 1.21.8</option>
+        <option value="1_21_5">Java 1.21.5</option>
+        <option value="1_21_4">Java 1.21.4</option>
+        <option value="1_21_2">Java 1.21.2 - 1.21.3</option>
+        <option value="1_21">Java 1.21 - 1.21.1</option>
+        <option value="1_20">Java 1.20</option>
+        <option value="1_19_3">Java 1.19.3 - 1.19.4</option>
+        <option value="1_19">Java 1.19 - 1.19.2</option>
+        <option value="1_18">Java 1.18</option>
+        <option value="1_17">Java 1.17</option>
+        <option value="1_16">Java 1.16</option>
+        <option value="1_15">Java 1.15</option>
+        <option value="1_14">Java 1.14</option>
+        <option value="1_13">Java 1.13</option>
+        <option value="1_12">Java 1.12</option>
+        <option value="1_11">Java 1.11</option>
+        <option value="1_10">Java 1.10</option>
+        <option value="1_9">Java 1.9</option>
+        <option value="1_8">Java 1.8</option>
+        <option value="1_8">Java 1.7（リンクは1.8扱い）</option>
+      </select>
+      <small>スライムチャンクの位置はJava版のどのバージョンでも同じです。選んだバージョンはChunkbaseのリンクに反映されます。※バージョンの指定はChunkbaseの表記に合わせています。実際にChunkbaseを開いて、シードとバージョンが正しく反映されているか確認してください。</small>
+    </label>
+    <div class="row">
+      <label>中心 X（ブロック）<input type="number" id="cx" value="0" step="1"></label>
+      <label>中心 Z（ブロック）<input type="number" id="cz" value="0" step="1"></label>
+      <label>探す半径（ブロック）<input type="number" id="rad" value="100000" min="64" max="500000" step="1000"></label>
+    </div>
+    <label class="check"><input type="checkbox" id="iso"> 外周1チャンクにスライムチャンクがないものだけ表示する</label>
+    <div class="actions">
+      <button type="button" class="primary" id="go">探す</button>
+      <button type="button" id="stop" disabled>止める</button>
+      <span class="est" id="est"></span>
+    </div>
+    <p class="err" id="err" role="alert"></p>
+  </form>
+
+  <div class="progress" id="prog">
+    <div class="bar"><div id="barfill"></div></div>
+    <p id="status"></p>
+  </div>
+
+  <div class="results-head" id="rhead" hidden>
+    <h2 id="rtitle">見つかった場所</h2>
+    <button type="button" id="copyall">一覧をコピー</button>
+  </div>
+  <ol id="list"></ol>
+  <p class="empty" id="empty" hidden>この範囲には見つかりませんでした。半径を広げてみてください。</p>
+
+  <div class="note">
+    3×3が成立する確率は1か所あたり約10億分の1です。半径を広げるほど時間がかかります。
+    <ul>
+      <li>スライムチャンクでは、高さY40以下の暗い場所でスライムが湧きます。</li>
+      <li>Chunkbaseで開いたときは、シードとバージョンが合っているか画面で確認してください。1.7を選んだ場合、リンクはChunkbaseの指定に合わせて1.8扱い（java_1_8）になります。</li>
+      <li>Java版の判定式で計算しています（バージョンが変わっても判定式は同じです）。統合版（Bedrock）は判定式が違うため、結果が合いません。</li>
+      <li>座標は「中心X・Z」に近い順に並べます。ブロック範囲は中心から±24ブロックです。</li>
+    </ul>
+  </div>
+</main>
+
+<script>
+/*CORE_START*/
+const TWO24 = 16777216, TWO48 = 281474976710656;
+const MH = 0x5DE, ML = 0xECE66D;
+const KHI = 0x3a ^ 0x5DE, KLO = 0xd8025f ^ 0xECE66D;
+let S48 = 0;
+
+function setSeed(seedBig) { S48 = Number(BigInt.asUintN(48, seedBig)); }
+
+function parseSeed(str) {
+  str = str.trim();
+  if (!str) return null;
+  if (/^-?\d+$/.test(str)) {
+    const b = BigInt(str);
+    if (b >= -(2n ** 63n) && b <= 2n ** 63n - 1n) return b;
+  }
+  let h = 0;
+  for (let i = 0; i < str.length; i++) h = (Math.imul(31, h) + str.charCodeAt(i)) | 0;
+  return BigInt(h);
+}
+
+function xTerm(x) { return Math.imul(Math.imul(x, x), 0x4c1906) + Math.imul(x, 0x5ac0db); }
+function zTerm(z) { return Math.imul(z, z) * 0x4307a7 + Math.imul(z, 0x5f24f); }
+
+function slimeT(xt, zt) {
+  let t = (S48 + xt + zt) % TWO48;
+  if (t < 0) t += TWO48;
+  let hi = Math.floor(t / TWO24);
+  let lo = t - hi * TWO24;
+  hi ^= KHI; lo ^= KLO;
+  for (;;) {
+    const p = lo * ML + 0xB;
+    const nlo = p % TWO24;
+    const carry = (p - nlo) / TWO24;
+    hi = (hi * ML + lo * MH + carry) % TWO24;
+    lo = nlo;
+    const bits = hi * 128 + Math.floor(lo / 131072);
+    const val = bits % 10;
+    if (bits - val + 9 < 2147483648) return val === 0;
+  }
+}
+function slimeAt(cx, cz) { return slimeT(xTerm(cx), zTerm(cz)); }
+
+function isIsolated(cx, cz) {
+  for (let a = -1; a <= 3; a++) for (let b = -1; b <= 3; b++) {
+    if (a >= 0 && a < 3 && b >= 0 && b < 3) continue;
+    if (slimeAt(cx + a, cz + b)) return false;
+  }
+  return true;
+}
+/*CORE_END*/
+
+const $ = (id) => document.getElementById(id);
+let running = false, cancel = false, found = [], lastArea = null;
+
+function fmt(n) { return n.toLocaleString("ja-JP"); }
+
+function area() {
+  const X = Math.round(Number($("cx").value) || 0);
+  const Z = Math.round(Number($("cz").value) || 0);
+  let R = Math.round(Number($("rad").value) || 0);
+  R = Math.max(64, Math.min(500000, R));
+  const rc = Math.ceil(R / 16);
+  return { X, Z, R, rc, ccx: Math.floor(X / 16), ccz: Math.floor(Z / 16) };
+}
+
+function updateEst() {
+  const a = area();
+  const cells = (2 * a.rc + 1) ** 2;
+  $("est").textContent = "調べるチャンク数：約 " + (cells >= 1e8 ? (cells / 1e8).toFixed(1) + "億" : fmt(Math.round(cells / 1e4)) + "万");
+}
+["cx", "cz", "rad"].forEach((id) => $(id).addEventListener("input", updateEst));
+updateEst();
+
+function setBusy(b) {
+  running = b;
+  $("go").disabled = b; $("stop").disabled = !b;
+  ["seed", "ver", "cx", "cz", "rad", "iso"].forEach((id) => ($(id).disabled = b));
+}
+
+function start() {
+  $("err").textContent = "";
+  const seed = parseSeed($("seed").value);
+  if (seed === null) { $("err").textContent = "シード値を入力してください。"; return; }
+  setSeed(seed);
+  const a = area();
+  lastArea = { ...a, seed: seed.toString(), ver: $("ver").value, verLabel: $("ver").options[$("ver").selectedIndex].text };
+  found = [];
+  $("list").innerHTML = ""; $("empty").hidden = true; $("rhead").hidden = true;
+  $("prog").classList.add("on");
+  setBusy(true); cancel = false;
+
+  const x0 = a.ccx - a.rc, x1 = a.ccx + a.rc, z0 = a.ccz - a.rc, z1 = a.ccz + a.rc;
+  const W = x1 - x0 + 1, H = z1 - z0 + 1;
+  const xt = new Float64Array(W);
+  for (let i = 0; i < W; i++) xt[i] = xTerm(x0 + i);
+  let r0 = new Uint8Array(W), r1 = new Uint8Array(W), r2 = new Uint8Array(W);
+  const fill = (z, arr) => { const zt = zTerm(z); for (let i = 0; i < W; i++) arr[i] = slimeT(xt[i], zt) ? 1 : 0; };
+  fill(z0, r0); fill(z0 + 1, r1);
+  let z = z0 + 2;
+  const onlyIso = $("iso").checked;
+  const t0 = performance.now();
+
+  function step() {
+    const tick = performance.now();
+    while (z <= z1 && performance.now() - tick < 30 && !cancel) {
+      fill(z, r2);
+      for (let i = 0; i + 2 < W; i++) {
+        if (r0[i] & r1[i] & r2[i] && r0[i + 1] & r1[i + 1] & r2[i + 1] && r0[i + 2] & r1[i + 2] & r2[i + 2]) {
+          const cx = x0 + i, cz = z - 2;
+          const iso = isIsolated(cx, cz);
+          if (!onlyIso || iso) found.push({ cx, cz, iso });
+        }
+      }
+      const tmp = r0; r0 = r1; r1 = r2; r2 = tmp;
+      z++;
+    }
+    const done = Math.min(1, (z - z0) / H);
+    $("barfill").style.width = (done * 100).toFixed(1) + "%";
+    const sec = ((performance.now() - t0) / 1000).toFixed(1);
+    $("status").textContent = (cancel ? "停止しました" : done >= 1 ? "完了しました" : "探索中…") +
+      "　" + (done * 100).toFixed(1) + "%　見つかった数：" + found.length + "　経過 " + sec + "秒";
+    if (z <= z1 && !cancel) { setTimeout(step, 0); } else { finish(); }
+  }
+  setTimeout(step, 0);
+}
+
+function chunkbaseUrl(x, zz) {
+  return "https://www.chunkbase.com/apps/slime-finder#seed=" + lastArea.seed +
+    "&platform=java_" + lastArea.ver + "&x=" + x + "&z=" + zz + "&zoom=0.75";
+}
+
+function copyText(text, btn) {
+  const done = () => { if (!btn) return; const o = btn.textContent; btn.textContent = "コピーしました"; setTimeout(() => (btn.textContent = o), 1400); };
+  const fallback = () => {
+    const ta = document.createElement("textarea");
+    ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand("copy"); done(); } catch (e) {}
+    document.body.removeChild(ta);
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, fallback);
+  else fallback();
+}
+
+function drawMini(canvas, cx, cz) {
+  const cs = getComputedStyle(document.documentElement);
+  const on = cs.getPropertyValue("--slime").trim(), off = cs.getPropertyValue("--cell-off").trim();
+  const line = cs.getPropertyValue("--deep").trim();
+  const N = 11, S = 10, off0 = 4; // 11x11 chunks, 3x3 starts at index 4
+  canvas.width = N * S; canvas.height = N * S;
+  const g = canvas.getContext("2d");
+  for (let i = 0; i < N; i++) for (let j = 0; j < N; j++) {
+    g.fillStyle = slimeAt(cx - off0 + i, cz - off0 + j) ? on : off;
+    g.fillRect(i * S, j * S, S - 1, S - 1);
+  }
+  g.strokeStyle = line; g.lineWidth = 2;
+  g.strokeRect(off0 * S - 1, off0 * S - 1, 3 * S + 1, 3 * S + 1);
+}
+
+function finish() {
+  setBusy(false);
+  const a = lastArea;
+  found.forEach((f) => {
+    f.bx = f.cx * 16 + 24; f.bz = f.cz * 16 + 24;
+    f.dist = Math.round(Math.hypot(f.bx - a.X, f.bz - a.Z));
+  });
+  found.sort((p, q) => p.dist - q.dist);
+  $("rhead").hidden = false;
+  $("empty").hidden = found.length > 0;
+  const LIMIT = 50;
+  $("rtitle").textContent = "見つかった場所：" + found.length + "か所" + (found.length > LIMIT ? "（近い順に" + LIMIT + "か所を表示）" : "（近い順）");
+  const list = $("list"); list.innerHTML = "";
+  found.slice(0, LIMIT).forEach((f) => {
+    const li = document.createElement("li"); li.className = "res";
+    const cv = document.createElement("canvas");
+    cv.setAttribute("role", "img");
+    cv.setAttribute("aria-label", "周辺のスライムチャンク地図。緑がスライムチャンク、枠が3×3");
+    const info = document.createElement("div");
+    info.innerHTML =
+      '<div class="coord">X ' + fmt(f.bx) + ' / Z ' + fmt(f.bz) + '</div>' +
+      '<div class="sub"><span class="tag ' + (f.iso ? "iso" : "adj") + '">' + (f.iso ? "外周もきれい" : "隣にスライムチャンクあり") + '</span>中心から約 ' + fmt(f.dist) + ' ブロック</div>' +
+      '<div class="sub">チャンク X ' + f.cx + '〜' + (f.cx + 2) + ' / Z ' + f.cz + '〜' + (f.cz + 2) +
+      '　ブロック X ' + fmt(f.cx * 16) + '〜' + fmt(f.cx * 16 + 47) + ' / Z ' + fmt(f.cz * 16) + '〜' + fmt(f.cz * 16 + 47) + '</div>';
+    const acts = document.createElement("div"); acts.className = "acts";
+    const b1 = document.createElement("button"); b1.type = "button"; b1.textContent = "座標をコピー";
+    b1.onclick = () => copyText(f.bx + " " + f.bz, b1);
+    const b2 = document.createElement("button"); b2.type = "button"; b2.textContent = "/tp コマンドをコピー";
+    b2.onclick = () => copyText("/tp @s " + f.bx + " ~ " + f.bz, b2);
+    const l = document.createElement("a"); l.className = "btn"; l.textContent = "Chunkbaseで開く";
+    l.href = chunkbaseUrl(f.bx, f.bz); l.target = "_blank"; l.rel = "noopener noreferrer";
+    acts.append(b1, b2, l); info.appendChild(acts);
+    li.append(cv, info); list.appendChild(li);
+    drawMini(cv, f.cx, f.cz);
+  });
+}
+
+$("copyall").onclick = () => {
+  const a = lastArea;
+  const lines = ["シード: " + a.seed + "（" + a.verLabel + "）", "探索: 中心(" + a.X + ", " + a.Z + ") 半径" + a.R + "ブロック", ""];
+  found.forEach((f, i) => lines.push((i + 1) + ". X " + f.bx + ", Z " + f.bz + "（" + (f.iso ? "外周もきれい" : "隣接あり") + "、距離約" + f.dist + "）"));
+  copyText(lines.join("\n"), $("copyall"));
+};
+$("go").onclick = start;
+$("stop").onclick = () => { cancel = true; };
+</script>
+</body>
+</html>

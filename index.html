@@ -1,330 +1,280 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ja" data-theme="dark">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <title>Minecraft スライムチャンク判定ツール（日本語版）</title>
-  <meta name="description" content="Minecraft（マイクラ）のシード値と座標から、スライムチャンクを高速に自動判定する軽量ツールです。日本語対応。">
-  <meta name="keywords" content="Minecraft, スライムチャンク, Slime Chunk Detector, スライム, ダウンロード, 日本語">
+  <title>Slime Chunk Detector 日本語版 | Minecraft スライムチャンク判定ツール</title>
+  <meta name="description" content="Minecraft（マイクラ）のシード値と座標から、スライムチャンクを高速に自動判定する軽量ツールです。オフライン動作・日本語対応。GitHub Releases から無料でダウンロードできます。">
+  <meta name="keywords" content="Minecraft, マイクラ, スライムチャンク, Slime Chunk Detector, スライムトラップ, シード値, ダウンロード, 日本語">
   <meta name="robots" content="index,follow">
+  <meta name="theme-color" content="#0a1626">
 
   <!-- Open Graph / Twitter -->
   <meta property="og:title" content="Slime Chunk Detector 日本語版 - ダウンロード">
-  <meta property="og:description" content="Minecraft用のスライムチャンク判定ツール。オフラインで動作する軽量実行ファイルをGitHub Releasesからダウンロードできます。">
+  <meta property="og:description" content="Minecraft用のスライムチャンク判定ツール。オフラインで動作する軽量実行ファイルを GitHub Releases からダウンロードできます。">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://sikuro0.github.io/slime-chunk-Detector-java-ja_jp/">
   <meta property="og:site_name" content="Slime Chunk Detector 日本語版">
   <meta name="twitter:card" content="summary">
   <link rel="canonical" href="https://sikuro0.github.io/slime-chunk-Detector-java-ja_jp/">
 
-  <!-- フォント -->
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 
-  <style>
-    /* Reset & base */
-    *,*::before,*::after{box-sizing:border-box}
-    html,body{height:100%;margin:0;font-family:"Noto Sans JP",system-ui,-apple-system,"Segoe UI",Roboto,Arial;background:#071428;color:#e6f7ff}
-    :root{
-      --panel:#07263a;
-      --card:#05202b;
-      --accent:#2ea3ff;
-      --accent2:#b7ff6a;
-      --muted:#e6f7ff;
-      --muted-2:#cfead6;
-      --shadow: rgba(0,0,0,0.45);
-      --gap:18px;
-      --container-padding:20px;
-      --max-width:980px;
-    }
-
-    /* Safe area and center */
-    body{
-      padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
-      display:flex;align-items:flex-start;justify-content:center;
-      background:linear-gradient(180deg, rgba(0,0,0,0.12), rgba(0,0,0,0.18)),var(--bg, #071428);
-    }
-
-    .container{
-      width:100%;
-      max-width:var(--max-width);
-      margin:24px;
-      background:linear-gradient(180deg,var(--panel),var(--card));
-      border-radius:12px;
-      box-shadow:0 12px 30px var(--shadow);
-      overflow:hidden;
-      border:2px solid rgba(255,255,255,0.03);
-    }
-
-    /* Header */
-    header{
-      display:flex;align-items:center;gap:12px;padding:16px 20px;background:linear-gradient(90deg,var(--accent),var(--accent2));
-      color:#042028;min-height:64px;box-sizing:border-box;
-    }
-    .logo{width:64px;height:64px;background:var(--accent2);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Press Start 2P',monospace;color:#04210a;font-size:12px;flex-shrink:0}
-    .title-block{display:flex;flex-direction:column;gap:4px}
-    header h1{font-family:'Press Start 2P',monospace;font-size:18px;margin:0;line-height:1}
-    header .subtitle{font-size:12px;color:#042028;opacity:0.95}
-    header .version{margin-left:auto;font-size:12px;color:#042028}
-
-    /* Main layout */
-    main{display:flex;gap:20px;padding:20px;flex-wrap:wrap}
-    .left{flex:1;min-width:260px}
-    .right{width:320px;min-width:220px}
-
-    .card{background:rgba(255,255,255,0.02);padding:14px;border-radius:8px;border:1px solid rgba(255,255,255,0.03)}
-    h2{font-family:'Press Start 2P',monospace;font-size:13px;margin:0 0 10px 0;color:var(--accent)}
-    .desc{line-height:1.6;color:var(--muted);font-size:14px}
-    .features{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:10px}
-    .feature{background:rgba(255,255,255,0.02);padding:8px;border-radius:6px;font-size:13px;color:var(--muted);border:1px solid rgba(255,255,255,0.02)}
-
-    .download{display:flex;flex-direction:column;gap:10px;align-items:stretch}
-    .btn{display:inline-block;padding:12px 14px;border-radius:8px;text-align:center;font-weight:700;color:#042028;background:var(--accent);text-decoration:none;font-family:'Press Start 2P',monospace;border:0}
-    .btn.secondary{background:var(--accent2);color:#042028;padding:10px 12px;font-weight:700;text-decoration:none;text-align:center;border:0}
-
-    .meta{font-size:13px;color:var(--muted-2)}
-    .small{font-size:12px;color:#bfe9c9}
-
-    footer{padding:10px 16px;background:linear-gradient(90deg,rgba(0,0,0,0.06),rgba(0,0,0,0.03));display:flex;gap:12px;align-items:center}
-    footer .left{font-size:13px;color:var(--muted-2)}
-    footer .right{margin-left:auto;font-size:12px;color:#9fcfb0}
-
-    /* Accordion */
-    .acc-item {
-      background: rgba(255,255,255,0.02);
-      border-radius: 8px;
-      margin-bottom: 10px;
-      border: 1px solid rgba(255,255,255,0.05);
-      overflow: hidden;
-    }
-    /* summary を本文フォントに揃える（Releases / SmartScreen 表示の不一致を解消） */
-    .acc-summary {
-      cursor: pointer;
-      padding: 10px 12px;
-      font-family: inherit; /* ここで本文フォントを継承 */
-      font-weight: 700;
-      letter-spacing: 0.02em;
-      color: var(--accent);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      user-select: none;
-    }
-    .acc-summary::-webkit-details-marker { display: none; }
-    .acc-summary::after {
-      content: "▸";
-      color: var(--muted-2);
-      transition: transform .18s ease;
-    }
-    .acc-item[open] .acc-summary::after { transform: rotate(90deg); }
-    .acc-body {
-      padding: 10px 12px 14px 12px;
-      font-size: 14px;
-      color: var(--muted);
-      line-height: 1.6;
-      font-family: inherit;
-    }
-
-    /* code の見た目を本文に馴染ませる */
-    code, pre {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Noto Sans Mono", monospace;
-      font-size: 0.95em;
-      background: rgba(255,255,255,0.02);
-      padding: 0.08em 0.28em;
-      border-radius: 4px;
-      color: var(--muted-2);
-      border: 1px solid rgba(255,255,255,0.02);
-    }
-    .inline-code {
-      font-family: inherit;
-      background: rgba(255,255,255,0.01);
-      padding: 0.06em 0.18em;
-      border-radius: 4px;
-      color: var(--muted-2);
-      border: 1px solid rgba(255,255,255,0.01);
-    }
-
-    /* Mobile-specific */
-    @media (max-width: 760px){
-      .container{margin:8px;border-radius:10px}
-      header{padding:12px 14px;gap:10px;min-height:56px;position:sticky;top:0;z-index:30}
-      .logo{width:52px;height:52px;font-size:10px}
-      header h1{font-size:15px}
-      header .version{font-size:11px}
-      main{padding:14px;gap:12px;flex-direction:column}
-      .right{width:100%}
-      .features{grid-template-columns:1fr}
-      .card{padding:12px}
-      .acc-summary { font-size: 14px; }
-      .acc-body { font-size: 14px; }
-    }
-
-    /* Desktop tweaks */
-    @media (min-width: 1200px){
-      :root{--max-width:1100px}
-      .right{width:360px}
-      .features{grid-template-columns:repeat(2,1fr)}
-      header h1{font-size:20px}
-    }
-
-    /* Accessibility focus */
-    a:focus{outline:3px solid rgba(255,255,255,0.12);outline-offset:2px}
-  </style>
+  <link rel="stylesheet" href="./assets/style.css">
 </head>
 <body>
-  <div class="container" role="main" aria-labelledby="page-title">
-    <header>
-      <div class="logo" aria-hidden="true">SLIME</div>
-      <div class="title-block">
-        <h1 id="page-title">Slime Chunk Detector</h1>
-        <div class="subtitle">日本語版 配布ページ</div>
+<a class="skip-link" href="#main">本文へスキップ</a>
+
+<!-- ============================================================
+     ヘッダー（固定）
+     ============================================================ -->
+<header class="site-header">
+  <a class="brand" href="#top">
+    <span class="brand-mark" aria-hidden="true">SC</span>
+    <span class="brand-text">
+      <strong>Slime Chunk Detector</strong>
+      <small>日本語版 配布ページ</small>
+    </span>
+  </a>
+
+  <nav class="site-nav" aria-label="ページ内リンク">
+    <a href="#overview">概要</a>
+    <a href="#usage">使い方</a>
+    <a href="#changelog">更新履歴</a>
+    <a href="#safety">安全性</a>
+    <a href="#support">サポート</a>
+  </nav>
+
+  <button class="theme-toggle" id="themeToggle" type="button"
+          aria-label="配色を切り替える" title="配色を切り替える">
+    <span class="theme-icon" aria-hidden="true">◐</span>
+  </button>
+</header>
+
+<main id="main">
+
+  <!-- ============================================================
+       ヒーロー（ダウンロード）
+       ============================================================ -->
+  <section class="hero" id="top">
+    <div class="hero-body">
+      <p class="eyebrow">Minecraft Java Edition ユーティリティ</p>
+      <h1>スライムチャンクを<br>一瞬で見つける</h1>
+      <p class="lead">
+        シード値と座標を入れるだけ。インストール不要の単体 exe で、
+        スライムトラップに使えるチャンクをまとめて判定します。
+      </p>
+
+      <ul class="hero-badges">
+        <li><span class="dot"></span>完全オフライン動作</li>
+        <li><span class="dot"></span>インストール不要</li>
+        <li><span class="dot"></span>日本語 / English</li>
+      </ul>
+    </div>
+
+    <!-- ダウンロードカード：中身は GitHub Releases から自動更新されます -->
+    <div class="download-card" id="downloadCard">
+      <div class="dl-head">
+        <span class="dl-label">最新版</span>
+        <span class="chip" id="dlVersion">読み込み中…</span>
       </div>
-      <div class="version" aria-hidden="true">v1.5.0</div>
-    </header>
 
-    <main>
-      <section class="left">
-        <div class="card" aria-labelledby="overview-title">
-          <h2 id="overview-title">概要</h2>
-          <p class="desc">Slime Chunk Detector は Minecraft のスライムチャンクを判定するツールです。シングルプレイやサーバーで使用可能で、バージョン指定や結果の保存が可能です。</p>
+      <a class="btn btn-primary" id="downloadBtn" href="#" rel="noopener">
+        <span class="btn-icon" aria-hidden="true">⤓</span>
+        <span>ダウンロード</span>
+      </a>
 
-          <h2>特徴</h2>
-          <div class="features" role="list">
-            <div class="feature" role="listitem">軽量 実行ファイル</div>
-            <div class="feature" role="listitem">多機能</div>
-            <div class="feature" role="listitem">日本語対応(v1.3.0から英語に対応)</div>
-            <div class="feature" role="listitem">バージョン管理済み</div>
-            <div class="feature" role="listitem">ゲームバージョン指定可能</div>
-            <div class="feature" role="listitem">発見箇所をtxtで保存可能</div>
-          </div>
+      <dl class="dl-meta">
+        <div><dt>ファイル</dt><dd id="dlFileName">—</dd></div>
+        <div><dt>サイズ</dt><dd id="dlSize">—</dd></div>
+        <div><dt>公開日</dt><dd id="dlDate">—</dd></div>
+        <div><dt>対応 OS</dt><dd>Windows 10 / 11</dd></div>
+      </dl>
 
-          <h2 style="margin-top:12px">使い方</h2>
-          <ol class="small" style="line-height:1.7">
-            <li>Releases から最新版の exe をダウンロード</li>
-            <li>exe を起動する</li>
-            <li>シード値や座標を入力してスライムチャンクを確認</li>
+      <div class="dl-actions">
+        <a class="btn btn-ghost" id="releasesLink" href="#" target="_blank" rel="noopener">過去のバージョン</a>
+        <button class="btn btn-ghost" id="copyLinkBtn" type="button">リンクをコピー</button>
+      </div>
+
+      <p class="dl-note" id="dlNote" role="status"></p>
+    </div>
+  </section>
+
+  <div class="wrap">
+
+    <!-- ============================================================
+         概要・特徴
+         ============================================================ -->
+    <section class="section" id="overview">
+      <h2>概要</h2>
+      <p class="prose">
+        Slime Chunk Detector は、Minecraft（Java Edition）のスライムチャンクを判定するツールです。
+        シングルプレイでもサーバーでも使え、ゲームバージョンを指定した判定と、
+        見つかった座標の保存に対応しています。
+      </p>
+
+      <h3>特徴</h3>
+      <!-- ▼ 項目を増やしたいときは <li> を足すだけです -->
+      <ul class="feature-grid">
+        <li><strong>軽量な単体 exe</strong>ランタイム不要、ダブルクリックで起動</li>
+        <li><strong>多機能</strong>範囲判定・座標検索をまとめて実行</li>
+        <li><strong>日本語対応</strong>v1.3.0 から英語表示にも対応</li>
+        <li><strong>バージョン指定</strong>ゲームバージョンごとの判定に対応</li>
+        <li><strong>結果を保存</strong>発見した座標を txt に書き出し</li>
+        <li><strong>オフライン</strong>ネットワーク通信は一切行いません</li>
+      </ul>
+    </section>
+
+    <!-- ============================================================
+         使い方
+         ============================================================ -->
+    <section class="section" id="usage">
+      <h2>使い方</h2>
+      <!-- ▼ 手順を増やしたいときは <li> を足すだけです -->
+      <ol class="steps">
+        <li>
+          <h3>exe をダウンロード</h3>
+          <p>上のボタン、または Releases ページから最新版を取得します。</p>
+        </li>
+        <li>
+          <h3>exe を起動</h3>
+          <p>インストールは不要です。保存したファイルをそのまま実行してください。</p>
+        </li>
+        <li>
+          <h3>シード値と座標を入力</h3>
+          <p>ワールドのシード値、探索する座標の範囲、ゲームバージョンを指定します。</p>
+        </li>
+        <li>
+          <h3>結果を確認・保存</h3>
+          <p>スライムチャンクの一覧が表示されます。必要なら txt に書き出せます。</p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ============================================================
+         更新履歴（GitHub Releases から自動生成 / 編集不要）
+         ============================================================ -->
+    <section class="section" id="changelog">
+      <h2>更新履歴</h2>
+      <div id="changelogList" class="changelog">
+        <p class="muted">読み込み中…</p>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         安全性と警告への対処
+         ============================================================ -->
+    <section class="section" id="safety">
+      <h2>安全性と警告への対処</h2>
+      <p class="prose">
+        署名のない個人製の exe は、Windows やウイルス対策ソフトに警告されることがあります。
+        以下の内容を確認したうえで、必要な場合のみ設定を変更してください。
+      </p>
+
+      <!-- ▼ 項目を増やしたいときは <details> ブロックをコピーして足すだけです -->
+      <details class="acc">
+        <summary>このプログラムについて</summary>
+        <div class="acc-body">
+          <p>シード値からスライムチャンクを判定するだけの単機能ツールです。<strong>ネットワーク接続は行いません</strong>。ソースコードは GitHub リポジトリで公開しています。</p>
+        </div>
+      </details>
+
+      <details class="acc">
+        <summary>SmartScreen の「WindowsによってPCが保護されました」が出る場合</summary>
+        <div class="acc-body">
+          <ol>
+            <li>警告画面の「詳細情報」をクリック</li>
+            <li>表示された「実行」をクリック</li>
           </ol>
+          <p class="note">ダウンロード数が少ない新しいファイルに出る警告です。配布元が信頼できるかを必ず確認してください。</p>
         </div>
-      </section>
+      </details>
 
-      <aside class="right" aria-labelledby="download-title">
-        <div class="card download" id="download-block">
-          <h2 id="download-title">ダウンロード</h2>
-
-          <a id="downloadBtn" class="btn"
-             href="https://github.com/sikuro0/slime-chunk-Detector/releases/download/main8/slime-chunk.exe"
-             download="slime-chunk.exe" aria-label="最新版をダウンロード">最新版をダウンロード</a>
-
-          <a class="btn secondary" href="https://github.com/sikuro0/slime-chunk-Detector/releases" target="_blank" rel="noopener">Releases ページを開く</a>
-
-          <div style="margin-top:8px" class="meta">
-            <div>ファイル形式: <strong>.exe</strong></div>
-            <div>サイズ: <span id="fileSize">最新 275KB</span></div>
-            <div style="margin-top:8px" class="small">※ リリースのタグ名とファイル名に依存します。必要なら Releases のアセット名を修正してください。</div>
-          </div>
+      <details class="acc">
+        <summary>Smart App Control でブロックされる場合</summary>
+        <div class="acc-body">
+          <p>Windows 11 の Smart App Control は、署名されていない実行ファイルをブロックすることがあります。</p>
+          <ol>
+            <li>「Windows セキュリティ」を開く</li>
+            <li>「アプリとブラウザー コントロール」を選択</li>
+            <li>「Smart App Control の設定」を開く</li>
+            <li>「オフ」に切り替える（再起動が必要）</li>
+          </ol>
+          <p class="note">Windows の保護機能のため、自己責任で設定してください。一度オフにすると再度オンにはできません。</p>
         </div>
+      </details>
 
-        <div class="card" style="margin-top:12px" aria-labelledby="support-title">
-          <h2 id="support-title">サポート</h2>
-          <p class="small">不具合報告や要望は Issues へお願いします。</p>
-          <p class="small"><a href="https://github.com/sikuro0/slime-chunk-Detector/issues" style="color:var(--muted)">Issue を作成する</a></p>
+      <details class="acc">
+        <summary>ウイルスと脅威の防止で削除される場合</summary>
+        <div class="acc-body">
+          <ol>
+            <li>「Windows セキュリティ」を開く</li>
+            <li>「ウイルスと脅威の防止」を選択</li>
+            <li>「設定の管理」をクリック</li>
+            <li>「除外の追加または削除」を選択</li>
+            <li>「除外の追加」→「ファイル」から exe を指定</li>
+          </ol>
+          <p class="note">除外設定はセキュリティを弱める可能性があるため、必要な場合のみ設定してください。</p>
         </div>
+      </details>
 
-        <!-- 折りたたみ式の安全性案内 -->
-        <div class="card" style="margin-top:12px" aria-labelledby="safety-title">
-          <h2 id="safety-title">実行ファイルの安全性と警告への対処</h2>
+      <details class="acc">
+        <summary>誤検知かどうかを自分で確かめる</summary>
+        <div class="acc-body">
+          <ul>
+            <li>VirusTotal にファイルをアップロードしてスキャン結果を確認する</li>
+            <li>GitHub のソースコードを読んで動作を確認する</li>
+            <li>必要であればベンダーに誤検知として報告する</li>
+          </ul>
+          <p class="note">疑わしい点があれば実行を中止し、Issue でご相談ください。</p>
+        </div>
+      </details>
+    </section>
 
-          <details class="acc-item">
-            <summary class="acc-summary">この実行ファイルについて</summary>
-            <div class="acc-body">
-              <p class="desc">
-                このプログラムはシード値からスライムチャンクを判定する単機能ツールです。<strong>ネットワーク接続は行いません</strong>。ソースコードは GitHub リポジトリで公開しています。
-              </p>
-            </div>
-          </details>
+    <!-- ============================================================
+         サポート
+         ============================================================ -->
+    <section class="section" id="support">
+      <h2>サポート</h2>
+      <div class="link-cards">
+        <a class="link-card" id="issuesLink" href="#" target="_blank" rel="noopener">
+          <strong>不具合報告・要望</strong>
+          <span>GitHub Issues に投稿してください</span>
+        </a>
+        <a class="link-card" id="repoLink" href="#" target="_blank" rel="noopener">
+          <strong>ソースコード</strong>
+          <span>リポジトリで公開しています</span>
+        </a>
+      </div>
+    </section>
 
-          <details class="acc-item">
-  <summary class="acc-summary">Smart App Control（スマートアプリコントロール）の回避方法</summary>
-  <div class="acc-body">
-    <p class="small">
-      Windows 11 の Smart App Control は、署名されていない実行ファイルをブロックすることがあります。  
-      以下の手順で実行を許可できます。
-    </p>
-    <ol class="small" style="line-height:1.6">
-      <li>「Windows セキュリティ」を開く</li>
-      <li>「アプリとブラウザー コントロール」を選択</li>
-      <li>「Smart App Control の設定」を開く</li>
-      <li>「オフ」に切り替える（再起動が必要）</li>
-    </ol>
-    <p class="small">※ Smart App Control は Windows の保護機能のため、自己責任で設定してください。</p>
   </div>
-</details>
+</main>
 
-<details class="acc-item">
-  <summary class="acc-summary">Windows セキュリティの除外設定</summary>
-  <div class="acc-body">
-    <p class="small">
-      ウイルスと脅威の防止でこの exe が誤検知される場合、以下の手順で除外できます。
-    </p>
-    <ol class="small" style="line-height:1.6">
-      <li>「Windows セキュリティ」を開く</li>
-      <li>「ウイルスと脅威の防止」を選択</li>
-      <li>「設定の管理」をクリック</li>
-      <li>「除外の追加または削除」を選択</li>
-      <li>「除外の追加」→「ファイル」から <strong>slime-chunk.exe</strong> を指定</li>
-    </ol>
-    <p class="small">※ 除外設定はセキュリティを弱める可能性があるため、必要な場合のみ設定してください。</p>
+<footer class="site-footer">
+  <small id="footerCopyright">© 2026 sikuro0</small>
+  <small>配布: GitHub Releases</small>
+</footer>
+
+<!-- モバイル用の固定ダウンロードバー -->
+<div class="mobile-bar" id="mobileBar" hidden>
+  <div class="mobile-bar-info">
+    <strong>最新版</strong>
+    <span id="mobileVersion">—</span>
   </div>
-</details>
+  <a class="btn btn-primary" id="mobileDownloadBtn" href="#" rel="noopener">ダウンロード</a>
+</div>
 
-
-          <details class="acc-item">
-            <summary class="acc-summary">ウイルス対策ソフトの誤検知への対処</summary>
-            <div class="acc-body">
-              <ul class="small" style="line-height:1.6">
-                <li>VirusTotal にファイルをアップロードしてスキャン結果を確認する。</li>
-                <li>ソースコードを確認し、問題がないことを示す。</li>
-                <li>必要であれば主要ベンダーに誤検知を報告する。</li>
-              </ul>
-            </div>
-          </details>
-
-          <details class="acc-item">
-            <summary class="acc-summary">最後に（注意）</summary>
-            <div class="acc-body">
-              <p class="small">疑わしい点があれば実行を中止し、Issue でご相談ください。</p>
-            </div>
-          </details>
-        </div>
-      </aside>
-    </main>
-
-    <footer>
-      <div class="left">© 2026 sikuro0</div>
-      <div class="right">配布: GitHub Releases</div>
-    </footer>
+<noscript>
+  <div class="noscript">
+    JavaScript が無効のため、最新版の情報を表示できません。
+    <a href="https://github.com/sikuro0/slime-chunk-Detector/releases">GitHub Releases ページ</a>から直接ダウンロードしてください。
   </div>
+</noscript>
 
-  <script>
-    (function(){
-      // Try to fetch file size (best-effort; may be blocked by CORS)
-      const fileUrl = document.getElementById('downloadBtn')?.href;
-      const fileSizeEl = document.getElementById('fileSize');
-      if(fileUrl && fileSizeEl){
-        fetch(fileUrl, { method: 'HEAD' }).then(resp=>{
-          const len = resp.headers.get('content-length');
-          if(len){
-            const size = Number(len);
-            const human = size >= 1e6 ? (size/1e6).toFixed(2)+' MB' : (size/1024).toFixed(1)+' KB';
-            fileSizeEl.textContent = human;
-          }
-        }).catch(()=>{ /* ignore CORS */ });
-      }
-
-      // Responsive helper (kept for future tweaks)
-      function toggleHelpers(){ /* no-op for now */ }
-      window.addEventListener('load', toggleHelpers);
-      window.addEventListener('resize', toggleHelpers);
-    })();
-  </script>
+<script src="./assets/config.js"></script>
+<script src="./assets/app.js" defer></script>
 </body>
 </html>

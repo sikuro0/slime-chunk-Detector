@@ -98,6 +98,7 @@ a:hover { text-decoration: underline; }
 .brand-text { display: flex; flex-direction: column; line-height: 1.25; }
 .brand-text strong { font-size: 14px; letter-spacing: .01em; }
 .brand-text small { font-size: 11px; color: var(--muted); }
+img.brand-mark { background: none; box-shadow: none; object-fit: contain; }
 
 .site-nav { display: flex; gap: 4px; margin-left: auto; }
 .site-nav a {

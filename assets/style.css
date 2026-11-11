@@ -225,9 +225,8 @@ img.brand-mark { background: none; box-shadow: none; object-fit: contain; }
   padding: 14px 16px;
 }
 .release-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 8px; }
-.release-head .tag {
-  font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--text);
-}
+.release-head { margin-bottom: 0; }
+.release-head .rel-title { font-size: 14px; font-weight: 700; color: var(--text); }
 .release-head time { font-size: 12px; color: var(--muted); }
 .release-head .latest {
   font-size: 11px; font-weight: 700; color: var(--go-text); background: var(--go);

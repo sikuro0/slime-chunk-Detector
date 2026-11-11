@@ -3,9 +3,16 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+
+  <!-- ============================================================
+       ページ内の文章は assets/i18n.js から差し替えられます。
+       文章を直すときは i18n.js のほうを編集してください。
+       （このHTML内の日本語は、JSが読み込めなかったときの保険です）
+       ============================================================ -->
+
   <title>Slime Chunk Detector 日本語版 | Minecraft スライムチャンク判定ツール</title>
   <meta name="description" content="Minecraft（マイクラ）のシード値と座標から、スライムチャンクを高速に自動判定する軽量ツールです。オフライン動作・日本語対応。GitHub Releases から無料でダウンロードできます。">
-  <meta name="keywords" content="Minecraft, マイクラ, スライムチャンク, Slime Chunk Detector, スライムトラップ, シード値, ダウンロード, 日本語">
+  <meta name="keywords" content="Minecraft, マイクラ, スライムチャンク, Slime Chunk Detector, slime chunk finder, スライムトラップ, シード値, ダウンロード">
   <meta name="robots" content="index,follow">
   <meta name="theme-color" content="#0a1626">
 
@@ -14,14 +21,20 @@
   <meta property="og:description" content="Minecraft用のスライムチャンク判定ツール。オフラインで動作する軽量実行ファイルを GitHub Releases からダウンロードできます。">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://sikuro0.github.io/slime-chunk-Detector/">
-  <meta property="og:site_name" content="Slime Chunk Detector 日本語版">
+  <meta property="og:site_name" content="Slime Chunk Detector">
   <meta name="twitter:card" content="summary">
   <link rel="canonical" href="https://sikuro0.github.io/slime-chunk-Detector/">
-    <!-- アイコン -->
+
+  <!-- 日本語ページと英語ページを同一URLで出し分けていることの明示 -->
+  <link rel="alternate" hreflang="ja" href="https://sikuro0.github.io/slime-chunk-Detector/">
+  <link rel="alternate" hreflang="en" href="https://sikuro0.github.io/slime-chunk-Detector/">
+  <link rel="alternate" hreflang="x-default" href="https://sikuro0.github.io/slime-chunk-Detector/">
+
+  <!-- アイコン -->
   <link rel="icon" href="./assets/favicon.ico" sizes="32x32">
   <link rel="icon" href="./assets/icon.svg" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="./assets/apple-touch-icon.png">
   <link rel="icon" href="./assets/icon-192.png" type="image/png" sizes="192x192">
+  <link rel="apple-touch-icon" href="./assets/apple-touch-icon.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -30,7 +43,7 @@
   <link rel="stylesheet" href="./assets/style.css">
 </head>
 <body>
-<a class="skip-link" href="#main">本文へスキップ</a>
+<a class="skip-link" href="#main" data-i18n="skip">本文へスキップ</a>
 
 <!-- ============================================================
      ヘッダー（固定）
@@ -40,22 +53,26 @@
     <img class="brand-mark" src="./assets/icon.svg" alt="" width="38" height="38">
     <span class="brand-text">
       <strong>Slime Chunk Detector</strong>
-      <small>日本語版 配布ページ</small>
+      <small data-i18n="brand.sub">日本語版 配布ページ</small>
     </span>
   </a>
 
-  <nav class="site-nav" aria-label="ページ内リンク">
-    <a href="#overview">概要</a>
-    <a href="#usage">使い方</a>
-    <a href="#changelog">更新履歴</a>
-    <a href="#safety">安全性</a>
-    <a href="#support">サポート</a>
+  <nav class="site-nav" aria-label="Section links">
+    <a href="#overview"  data-i18n="nav.overview">概要</a>
+    <a href="#usage"     data-i18n="nav.usage">使い方</a>
+    <a href="#changelog" data-i18n="nav.changelog">更新履歴</a>
+    <a href="#safety"    data-i18n="nav.safety">安全性</a>
+    <a href="#support"   data-i18n="nav.support">サポート</a>
   </nav>
 
-  <button class="theme-toggle" id="themeToggle" type="button"
-          aria-label="配色を切り替える" title="配色を切り替える">
-    <span class="theme-icon" aria-hidden="true">◐</span>
-  </button>
+  <div class="header-actions">
+    <button class="lang-toggle" id="langToggle" type="button" data-i18n-aria="lang.aria">
+      <span id="langLabel" data-i18n="lang.other">EN</span>
+    </button>
+    <button class="theme-toggle" id="themeToggle" type="button" data-i18n-aria="theme.aria">
+      <span aria-hidden="true">◐</span>
+    </button>
+  </div>
 </header>
 
 <main id="main">
@@ -65,42 +82,42 @@
        ============================================================ -->
   <section class="hero" id="top">
     <div class="hero-body">
-      <p class="eyebrow">Minecraft Java Edition ユーティリティ</p>
-      <h1>スライムチャンクを<br>一瞬で見つける</h1>
-      <p class="lead">
+      <p class="eyebrow" data-i18n="hero.eyebrow">Minecraft Java Edition ユーティリティ</p>
+      <h1 data-i18n="hero.title">スライムチャンクを<br>一瞬で見つける</h1>
+      <p class="lead" data-i18n="hero.lead">
         シード値と座標を入れるだけ。インストール不要の単体 exe で、
         スライムトラップに使えるチャンクをまとめて判定します。
       </p>
 
       <ul class="hero-badges">
-        <li><span class="dot"></span>完全オフライン動作</li>
-        <li><span class="dot"></span>インストール不要</li>
-        <li><span class="dot"></span>日本語 / English</li>
+        <li><span class="dot"></span><span data-i18n="hero.badge1">完全オフライン動作</span></li>
+        <li><span class="dot"></span><span data-i18n="hero.badge2">インストール不要</span></li>
+        <li><span class="dot"></span><span data-i18n="hero.badge3">日本語 / English</span></li>
       </ul>
     </div>
 
     <!-- ダウンロードカード：中身は GitHub Releases から自動更新されます -->
     <div class="download-card" id="downloadCard">
       <div class="dl-head">
-        <span class="dl-label">最新版</span>
-        <span class="chip" id="dlVersion">読み込み中…</span>
+        <span class="dl-label" data-i18n="dl.label">最新版</span>
+        <span class="chip" id="dlVersion">…</span>
       </div>
 
       <a class="btn btn-primary" id="downloadBtn" href="#" rel="noopener">
         <span class="btn-icon" aria-hidden="true">⤓</span>
-        <span>ダウンロード</span>
+        <span data-i18n="dl.button">ダウンロード</span>
       </a>
 
       <dl class="dl-meta">
-        <div><dt>ファイル</dt><dd id="dlFileName">—</dd></div>
-        <div><dt>サイズ</dt><dd id="dlSize">—</dd></div>
-        <div><dt>公開日</dt><dd id="dlDate">—</dd></div>
-        <div><dt>対応 OS</dt><dd>Windows 10 / 11</dd></div>
+        <div><dt data-i18n="dl.file">ファイル</dt><dd id="dlFileName">—</dd></div>
+        <div><dt data-i18n="dl.size">サイズ</dt><dd id="dlSize">—</dd></div>
+        <div><dt data-i18n="dl.date">公開日</dt><dd id="dlDate">—</dd></div>
+        <div><dt data-i18n="dl.os">対応 OS</dt><dd data-i18n="dl.osValue">Windows 10 / 11</dd></div>
       </dl>
 
       <div class="dl-actions">
-        <a class="btn btn-ghost" id="releasesLink" href="#" target="_blank" rel="noopener">過去のバージョン</a>
-        <button class="btn btn-ghost" id="copyLinkBtn" type="button">リンクをコピー</button>
+        <a class="btn btn-ghost" id="releasesLink" href="#" target="_blank" rel="noopener" data-i18n="dl.past">過去のバージョン</a>
+        <button class="btn btn-ghost" id="copyLinkBtn" type="button" data-i18n="dl.copy">リンクをコピー</button>
       </div>
 
       <p class="dl-note" id="dlNote" role="status"></p>
@@ -113,22 +130,22 @@
          概要・特徴
          ============================================================ -->
     <section class="section" id="overview">
-      <h2>概要</h2>
-      <p class="prose">
+      <h2 data-i18n="overview.h2">概要</h2>
+      <p class="prose" data-i18n="overview.body">
         Slime Chunk Detector は、Minecraft（Java Edition）のスライムチャンクを判定するツールです。
         シングルプレイでもサーバーでも使え、ゲームバージョンを指定した判定と、
         見つかった座標の保存に対応しています。
       </p>
 
-      <h3>特徴</h3>
-      <!-- ▼ 項目を増やしたいときは <li> を足すだけです -->
+      <h3 data-i18n="overview.h3">特徴</h3>
+      <!-- ▼ 項目を増やすときは <li> を足し、i18n.js に featN.t / featN.d を追加 -->
       <ul class="feature-grid">
-        <li><strong>軽量な単体 exe</strong>ランタイム不要、ダブルクリックで起動</li>
-        <li><strong>多機能</strong>範囲判定・座標検索をまとめて実行</li>
-        <li><strong>日本語対応</strong>v1.3.0 から英語表示にも対応</li>
-        <li><strong>バージョン指定</strong>ゲームバージョンごとの判定に対応</li>
-        <li><strong>結果を保存</strong>発見した座標を txt に書き出し</li>
-        <li><strong>オフライン</strong>ネットワーク通信は一切行いません</li>
+        <li><strong data-i18n="feat1.t">軽量な単体 exe</strong><span data-i18n="feat1.d">ランタイム不要、ダブルクリックで起動</span></li>
+        <li><strong data-i18n="feat2.t">多機能</strong><span data-i18n="feat2.d">範囲判定・座標検索をまとめて実行</span></li>
+        <li><strong data-i18n="feat3.t">日本語対応</strong><span data-i18n="feat3.d">v1.3.0 から英語表示にも対応</span></li>
+        <li><strong data-i18n="feat4.t">バージョン指定</strong><span data-i18n="feat4.d">ゲームバージョンごとの判定に対応</span></li>
+        <li><strong data-i18n="feat5.t">結果を保存</strong><span data-i18n="feat5.d">発見した座標を txt に書き出し</span></li>
+        <li><strong data-i18n="feat6.t">オフライン</strong><span data-i18n="feat6.d">ネットワーク通信は一切行いません</span></li>
       </ul>
     </section>
 
@@ -136,35 +153,34 @@
          使い方
          ============================================================ -->
     <section class="section" id="usage">
-      <h2>使い方</h2>
-      <!-- ▼ 手順を増やしたいときは <li> を足すだけです -->
+      <h2 data-i18n="usage.h2">使い方</h2>
       <ol class="steps">
         <li>
-          <h3>exe をダウンロード</h3>
-          <p>上のボタン、または Releases ページから最新版を取得します。</p>
+          <h3 data-i18n="step1.t">exe をダウンロード</h3>
+          <p data-i18n="step1.d">上のボタン、または Releases ページから最新版を取得します。</p>
         </li>
         <li>
-          <h3>exe を起動</h3>
-          <p>インストールは不要です。保存したファイルをそのまま実行してください。</p>
+          <h3 data-i18n="step2.t">exe を起動</h3>
+          <p data-i18n="step2.d">インストールは不要です。保存したファイルをそのまま実行してください。</p>
         </li>
         <li>
-          <h3>シード値と座標を入力</h3>
-          <p>ワールドのシード値、探索する座標の範囲、ゲームバージョンを指定します。</p>
+          <h3 data-i18n="step3.t">シード値と座標を入力</h3>
+          <p data-i18n="step3.d">ワールドのシード値、探索する座標の範囲、ゲームバージョンを指定します。</p>
         </li>
         <li>
-          <h3>結果を確認・保存</h3>
-          <p>スライムチャンクの一覧が表示されます。必要なら txt に書き出せます。</p>
+          <h3 data-i18n="step4.t">結果を確認・保存</h3>
+          <p data-i18n="step4.d">スライムチャンクの一覧が表示されます。必要なら txt に書き出せます。</p>
         </li>
       </ol>
     </section>
 
     <!-- ============================================================
-         更新履歴（GitHub Releases から自動生成 / 編集不要）
+         更新履歴（GitHub Releases のタイトルと公開日を自動表示）
          ============================================================ -->
     <section class="section" id="changelog">
-      <h2>更新履歴</h2>
+      <h2 data-i18n="changelog.h2">更新履歴</h2>
       <div id="changelogList" class="changelog">
-        <p class="muted">読み込み中…</p>
+        <p class="muted" data-i18n="changelog.loading">読み込み中…</p>
       </div>
     </section>
 
@@ -172,68 +188,50 @@
          安全性と警告への対処
          ============================================================ -->
     <section class="section" id="safety">
-      <h2>安全性と警告への対処</h2>
-      <p class="prose">
+      <h2 data-i18n="safety.h2">安全性と警告への対処</h2>
+      <p class="prose" data-i18n="safety.lead">
         署名のない個人製の exe は、Windows やウイルス対策ソフトに警告されることがあります。
         以下の内容を確認したうえで、必要な場合のみ設定を変更してください。
       </p>
 
-      <!-- ▼ 項目を増やしたいときは <details> ブロックをコピーして足すだけです -->
+      <!-- ▼ 項目を増やすときは <details> を足し、i18n.js に saN.* を追加 -->
       <details class="acc">
-        <summary>このプログラムについて</summary>
+        <summary data-i18n="sa1.s">このプログラムについて</summary>
         <div class="acc-body">
-          <p>シード値からスライムチャンクを判定するだけの単機能ツールです。<strong>ネットワーク接続は行いません</strong>。ソースコードは GitHub リポジトリで公開しています。</p>
+          <p data-i18n="sa1.p">シード値からスライムチャンクを判定するだけの単機能ツールです。<strong>ネットワーク接続は行いません</strong>。ソースコードは GitHub リポジトリで公開しています。</p>
         </div>
       </details>
 
       <details class="acc">
-        <summary>SmartScreen の「WindowsによってPCが保護されました」が出る場合</summary>
+        <summary data-i18n="sa2.s">SmartScreen の「WindowsによってPCが保護されました」が出る場合</summary>
         <div class="acc-body">
-          <ol>
-            <li>警告画面の「詳細情報」をクリック</li>
-            <li>表示された「実行」をクリック</li>
-          </ol>
-          <p class="note">ダウンロード数が少ない新しいファイルに出る警告です。配布元が信頼できるかを必ず確認してください。</p>
+          <ol data-i18n="sa2.list"><li>警告画面の「詳細情報」をクリック</li><li>表示された「実行」をクリック</li></ol>
+          <p class="note" data-i18n="sa2.note">ダウンロード数が少ない新しいファイルに出る警告です。配布元が信頼できるかを必ず確認してください。</p>
         </div>
       </details>
 
       <details class="acc">
-        <summary>Smart App Control でブロックされる場合</summary>
+        <summary data-i18n="sa3.s">Smart App Control でブロックされる場合</summary>
         <div class="acc-body">
-          <p>Windows 11 の Smart App Control は、署名されていない実行ファイルをブロックすることがあります。</p>
-          <ol>
-            <li>「Windows セキュリティ」を開く</li>
-            <li>「アプリとブラウザー コントロール」を選択</li>
-            <li>「Smart App Control の設定」を開く</li>
-            <li>「オフ」に切り替える（再起動が必要）</li>
-          </ol>
-          <p class="note">Windows の保護機能のため、自己責任で設定してください。一度オフにすると再度オンにはできません。</p>
+          <p data-i18n="sa3.p">Windows 11 の Smart App Control は、署名されていない実行ファイルをブロックすることがあります。</p>
+          <ol data-i18n="sa3.list"><li>「Windows セキュリティ」を開く</li><li>「アプリとブラウザー コントロール」を選択</li><li>「Smart App Control の設定」を開く</li><li>「オフ」に切り替える（再起動が必要）</li></ol>
+          <p class="note" data-i18n="sa3.note">Windows の保護機能のため、自己責任で設定してください。一度オフにすると再度オンにはできません。</p>
         </div>
       </details>
 
       <details class="acc">
-        <summary>ウイルスと脅威の防止で削除される場合</summary>
+        <summary data-i18n="sa4.s">ウイルスと脅威の防止で削除される場合</summary>
         <div class="acc-body">
-          <ol>
-            <li>「Windows セキュリティ」を開く</li>
-            <li>「ウイルスと脅威の防止」を選択</li>
-            <li>「設定の管理」をクリック</li>
-            <li>「除外の追加または削除」を選択</li>
-            <li>「除外の追加」→「ファイル」から exe を指定</li>
-          </ol>
-          <p class="note">除外設定はセキュリティを弱める可能性があるため、必要な場合のみ設定してください。</p>
+          <ol data-i18n="sa4.list"><li>「Windows セキュリティ」を開く</li><li>「ウイルスと脅威の防止」を選択</li><li>「設定の管理」をクリック</li><li>「除外の追加または削除」を選択</li><li>「除外の追加」→「ファイル」から exe を指定</li></ol>
+          <p class="note" data-i18n="sa4.note">除外設定はセキュリティを弱める可能性があるため、必要な場合のみ設定してください。</p>
         </div>
       </details>
 
       <details class="acc">
-        <summary>誤検知かどうかを自分で確かめる</summary>
+        <summary data-i18n="sa5.s">誤検知かどうかを自分で確かめる</summary>
         <div class="acc-body">
-          <ul>
-            <li>VirusTotal にファイルをアップロードしてスキャン結果を確認する</li>
-            <li>GitHub のソースコードを読んで動作を確認する</li>
-            <li>必要であればベンダーに誤検知として報告する</li>
-          </ul>
-          <p class="note">疑わしい点があれば実行を中止し、Issue でご相談ください。</p>
+          <ul data-i18n="sa5.list"><li>VirusTotal にファイルをアップロードしてスキャン結果を確認する</li><li>GitHub のソースコードを読んで動作を確認する</li><li>必要であればベンダーに誤検知として報告する</li></ul>
+          <p class="note" data-i18n="sa5.note">疑わしい点があれば実行を中止し、Issue でご相談ください。</p>
         </div>
       </details>
     </section>
@@ -242,15 +240,15 @@
          サポート
          ============================================================ -->
     <section class="section" id="support">
-      <h2>サポート</h2>
+      <h2 data-i18n="support.h2">サポート</h2>
       <div class="link-cards">
         <a class="link-card" id="issuesLink" href="#" target="_blank" rel="noopener">
-          <strong>不具合報告・要望</strong>
-          <span>GitHub Issues に投稿してください</span>
+          <strong data-i18n="support.c1t">不具合報告・要望</strong>
+          <span data-i18n="support.c1d">GitHub Issues に投稿してください</span>
         </a>
         <a class="link-card" id="repoLink" href="#" target="_blank" rel="noopener">
-          <strong>ソースコード</strong>
-          <span>リポジトリで公開しています</span>
+          <strong data-i18n="support.c2t">ソースコード</strong>
+          <span data-i18n="support.c2d">リポジトリで公開しています</span>
         </a>
       </div>
     </section>
@@ -260,26 +258,27 @@
 
 <footer class="site-footer">
   <small id="footerCopyright">© 2026 sikuro0</small>
-  <small>配布: GitHub Releases</small>
+  <small data-i18n="footer.dist">配布: GitHub Releases</small>
 </footer>
 
 <!-- モバイル用の固定ダウンロードバー -->
 <div class="mobile-bar" id="mobileBar" hidden>
   <div class="mobile-bar-info">
-    <strong>最新版</strong>
+    <strong data-i18n="dl.label">最新版</strong>
     <span id="mobileVersion">—</span>
   </div>
-  <a class="btn btn-primary" id="mobileDownloadBtn" href="#" rel="noopener">ダウンロード</a>
+  <a class="btn btn-primary" id="mobileDownloadBtn" href="#" rel="noopener" data-i18n="dl.button">ダウンロード</a>
 </div>
 
 <noscript>
-  <div class="noscript">
+  <div class="noscript" id="noscriptMsg">
     JavaScript が無効のため、最新版の情報を表示できません。
     <a href="https://github.com/sikuro0/slime-chunk-Detector/releases">GitHub Releases ページ</a>から直接ダウンロードしてください。
   </div>
 </noscript>
 
 <script src="./assets/config.js"></script>
+<script src="./assets/i18n.js"></script>
 <script src="./assets/app.js" defer></script>
 </body>
 </html>

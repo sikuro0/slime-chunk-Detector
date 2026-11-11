@@ -1,10 +1,12 @@
 /* ============================================================
    Slime Chunk Detector 配布ページ スクリプト
    ------------------------------------------------------------
+   ・表示言語の判定（日本語ブラウザ → 日本語、それ以外 → 英語）
    ・GitHub Releases から最新版の情報と更新履歴を自動取得
    ・配色（ダーク / ライト）の切り替え
    ・ダウンロードリンクのコピー
    通常の更新で、このファイルを触る必要はありません。
+   文章の修正は assets/i18n.js で行います。
    ============================================================ */
 
 (function () {
@@ -15,15 +17,82 @@
   var CACHE_KEY = "scd:releases";
   var CACHE_MIN = 30; // 分：この間はAPIを叩かずキャッシュを使う（API制限対策）
 
+  var LANG = "ja";       // 現在の表示言語
+  var RELEASES = null;   // 取得済みリリース（言語切替時の再描画用）
+  var LOAD_FAILED = false;
+
   var $ = function (id) { return document.getElementById(id); };
 
+  /* ---------- 言語 ---------- */
+
+  function detectLang() {
+    var saved = null;
+    try { saved = localStorage.getItem("scd:lang"); } catch (e) {}
+    if (saved === "ja" || saved === "en") return saved;
+
+    var list = (navigator.languages && navigator.languages.length)
+      ? navigator.languages
+      : [navigator.language || navigator.userLanguage || "en"];
+
+    for (var i = 0; i < list.length; i++) {
+      if (/^ja\b/i.test(list[i])) return "ja";
+    }
+    return "en";
+  }
+
+  function t(key) {
+    var dict = (window.I18N && window.I18N[LANG]) || {};
+    return dict[key] != null ? dict[key] : "";
+  }
+
+  function applyLang(lang) {
+    LANG = lang;
+    if (!window.I18N || !window.I18N[lang]) return; // i18n.js が無ければHTMLの文面をそのまま使う
+
+    document.documentElement.lang = lang;
+    if (t("meta.title")) document.title = t("meta.title");
+    setMeta('meta[name="description"]', "content", t("meta.desc"));
+    setMeta('meta[property="og:title"]', "content", t("meta.ogTitle"));
+    setMeta('meta[property="og:description"]', "content", t("meta.ogDesc"));
+
+    each(document.querySelectorAll("[data-i18n]"), function (el) {
+      var v = t(el.getAttribute("data-i18n"));
+      if (v) el.innerHTML = v;
+    });
+    each(document.querySelectorAll("[data-i18n-aria]"), function (el) {
+      var v = t(el.getAttribute("data-i18n-aria"));
+      if (v) { el.setAttribute("aria-label", v); el.setAttribute("title", v); }
+    });
+
+    // 動的に作っている部分を描き直す
+    if (RELEASES) { render(RELEASES); }
+    else if (LOAD_FAILED) { renderFallback(); }
+
+    function setMeta(sel, attr, val) {
+      var el = document.querySelector(sel);
+      if (el && val) el.setAttribute(attr, val);
+    }
+  }
+
+  function initLangToggle() {
+    var btn = $("langToggle");
+    if (!btn) return;
+    btn.addEventListener("click", function () {
+      var next = LANG === "ja" ? "en" : "ja";
+      try { localStorage.setItem("scd:lang", next); } catch (e) {}
+      applyLang(next);
+    });
+  }
+
+  function each(nodes, fn) { Array.prototype.forEach.call(nodes, fn); }
+
   /* ---------- 配色の切り替え ---------- */
+
   function initTheme() {
     var saved = null;
     try { saved = localStorage.getItem("scd:theme"); } catch (e) {}
     var prefersLight = window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches;
-    var theme = saved || (prefersLight ? "light" : "dark");
-    apply(theme);
+    apply(saved || (prefersLight ? "light" : "dark"));
 
     var btn = $("themeToggle");
     if (btn) {
@@ -34,14 +103,15 @@
       });
     }
 
-    function apply(t) {
-      document.documentElement.setAttribute("data-theme", t);
+    function apply(th) {
+      document.documentElement.setAttribute("data-theme", th);
       var meta = document.querySelector('meta[name="theme-color"]');
-      if (meta) meta.setAttribute("content", t === "light" ? "#f2f6fa" : "#0a1626");
+      if (meta) meta.setAttribute("content", th === "light" ? "#f2f6fa" : "#0a1626");
     }
   }
 
   /* ---------- 固定リンクと著作権表記 ---------- */
+
   function initStaticLinks() {
     var base = "https://github.com/" + CFG.owner + "/" + CFG.repo;
     setHref("releasesLink", base + "/releases");
@@ -56,6 +126,7 @@
   }
 
   /* ---------- 表示用のユーティリティ ---------- */
+
   function formatBytes(n) {
     if (typeof n !== "number" || !isFinite(n)) return "—";
     return n >= 1048576 ? (n / 1048576).toFixed(2) + " MB" : (n / 1024).toFixed(1) + " KB";
@@ -65,7 +136,12 @@
     if (!iso) return "—";
     var d = new Date(iso);
     if (isNaN(d.getTime())) return "—";
-    return d.getFullYear() + "年" + (d.getMonth() + 1) + "月" + d.getDate() + "日";
+    try {
+      return d.toLocaleDateString(LANG === "ja" ? "ja-JP" : "en-US",
+        { year: "numeric", month: "long", day: "numeric" });
+    } catch (e) {
+      return d.toISOString().slice(0, 10);
+    }
   }
 
   function escapeHtml(s) {
@@ -74,39 +150,14 @@
     });
   }
 
-  /* リリース本文（Markdown）を最小限だけHTMLに変換 */
-  function renderNotes(md) {
-    if (!md || !md.trim()) return '<p class="muted">（説明なし）</p>';
-    var lines = escapeHtml(md.trim()).split(/\r?\n/);
-    var html = "", inList = false;
-
-    lines.forEach(function (line) {
-      line = line
-        .replace(/`([^`]+)`/g, "<code>$1</code>")
-        .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
-        .replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>');
-
-      var item = line.match(/^\s*(?:[-*+]|\d+\.)\s+(.*)$/);
-      if (item) {
-        if (!inList) { html += "<ul>"; inList = true; }
-        html += "<li>" + item[1] + "</li>";
-      } else {
-        if (inList) { html += "</ul>"; inList = false; }
-        if (/^\s*#{1,6}\s/.test(line)) {
-          html += "<p><strong>" + line.replace(/^\s*#{1,6}\s*/, "") + "</strong></p>";
-        } else if (line.trim()) {
-          html += "<p>" + line + "</p>";
-        }
-      }
-    });
-    if (inList) html += "</ul>";
-    return html;
-  }
-
   /* ---------- リリース情報の取得 ---------- */
+
   function loadReleases() {
+    var el = $("dlVersion");
+    if (el) el.textContent = t("dl.loading") || "…";
+
     var cached = readCache();
-    if (cached) { render(cached); return; }
+    if (cached) { RELEASES = cached; render(cached); return; }
 
     fetch(API, { headers: { Accept: "application/vnd.github+json" } })
       .then(function (res) {
@@ -115,11 +166,12 @@
       })
       .then(function (data) {
         var list = (data || []).filter(function (r) { return !r.draft; });
-        if (!list.length) throw new Error("リリースがありません");
+        if (!list.length) throw new Error("no releases");
         writeCache(list);
+        RELEASES = list;
         render(list);
       })
-      .catch(function () { renderFallback(); });
+      .catch(function () { LOAD_FAILED = true; renderFallback(); });
   }
 
   function readCache() {
@@ -137,6 +189,7 @@
   }
 
   /* ---------- 画面への反映 ---------- */
+
   function render(list) {
     var latest = list[0];
     var asset = pickAsset(latest);
@@ -150,10 +203,7 @@
                  : (latest.html_url || (CFG.fallback && CFG.fallback.url))
     });
 
-    if (!asset) {
-      note("対象ファイルが見つかりませんでした。Releases ページから選んでください。");
-    }
-
+    note(asset ? "" : t("dl.noAsset"));
     renderChangelog(list.slice(0, CFG.changelogCount || 3));
   }
 
@@ -172,16 +222,15 @@
       version: f.version || "—",
       fileName: f.fileName || "—",
       size: f.size || "—",
-      date: formatDate(f.date) === "—" ? "—" : formatDate(f.date),
+      date: f.date ? formatDate(f.date) : "—",
       url: f.url || ("https://github.com/" + CFG.owner + "/" + CFG.repo + "/releases")
     });
-    note("最新情報を取得できませんでした。表示は前回の内容です。");
+    note(t("dl.failed"));
 
     var box = $("changelogList");
     if (box) {
-      box.innerHTML = '<p class="muted">更新履歴を読み込めませんでした。'
-        + '<a href="https://github.com/' + CFG.owner + "/" + CFG.repo
-        + '/releases" target="_blank" rel="noopener">Releases ページ</a>でご確認ください。</p>';
+      box.innerHTML = '<p class="muted">' + (t("changelog.failed") || "")
+        .replace("{url}", "https://github.com/" + CFG.owner + "/" + CFG.repo + "/releases") + "</p>";
     }
   }
 
@@ -192,20 +241,20 @@
     text("dlDate", info.date);
     text("mobileVersion", info.version);
 
-    [["downloadBtn"], ["mobileDownloadBtn"]].forEach(function (pair) {
-      var el = $(pair[0]);
+    ["downloadBtn", "mobileDownloadBtn"].forEach(function (id) {
+      var el = $(id);
       if (!el) return;
       el.href = info.url;
       if (/\.(exe|zip|jar)$/i.test(info.url)) el.setAttribute("download", info.fileName);
     });
 
-    initCopy(info.url);
+    initCopy();
     initMobileBar();
 
     function text(id, v) { var el = $(id); if (el) el.textContent = v; }
   }
 
-    function renderChangelog(list) {
+  function renderChangelog(list) {
     var box = $("changelogList");
     if (!box) return;
     box.innerHTML = list.map(function (r, i) {
@@ -213,26 +262,27 @@
       return '<article class="release">'
         + '<div class="release-head">'
         + '<span class="rel-title">' + escapeHtml(title) + "</span>"
-        + (i === 0 ? '<span class="latest">最新</span>' : "")
+        + (i === 0 ? '<span class="latest">' + escapeHtml(t("changelog.latest")) + "</span>" : "")
         + '<time datetime="' + escapeHtml(r.published_at || "") + '">' + formatDate(r.published_at) + "</time>"
         + "</div>"
         + "</article>";
     }).join("");
   }
 
-  function note(msg) { var el = $("dlNote"); if (el) el.textContent = msg; }
+  function note(msg) { var el = $("dlNote"); if (el) el.textContent = msg || ""; }
 
   /* ---------- リンクのコピー ---------- */
-  function initCopy(url) {
+
+  function initCopy() {
     var btn = $("copyLinkBtn");
     if (!btn || btn.dataset.ready) return;
     btn.dataset.ready = "1";
     btn.addEventListener("click", function () {
-      var target = $("downloadBtn") ? $("downloadBtn").href : url;
+      var dl = $("downloadBtn");
+      var target = dl ? dl.href : "";
       var done = function () {
-        var old = btn.textContent;
-        btn.textContent = "コピーしました";
-        setTimeout(function () { btn.textContent = old; }, 1600);
+        btn.textContent = t("dl.copied") || "Copied";
+        setTimeout(function () { btn.textContent = t("dl.copy") || "Copy link"; }, 1600);
       };
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(target).then(done, function () { note(target); });
@@ -243,6 +293,7 @@
   }
 
   /* ---------- モバイル用の固定バー ---------- */
+
   function initMobileBar() {
     var bar = $("mobileBar");
     var card = $("downloadCard");
@@ -251,13 +302,15 @@
 
     if (!("IntersectionObserver" in window)) return;
     new IntersectionObserver(function (entries) {
-      var visible = entries[0].isIntersecting;
-      bar.hidden = visible || window.innerWidth > 600;
+      bar.hidden = entries[0].isIntersecting || window.innerWidth > 600;
     }, { threshold: 0.15 }).observe(card);
   }
 
   /* ---------- 起動 ---------- */
+
   initTheme();
+  applyLang(detectLang());
+  initLangToggle();
   initStaticLinks();
   loadReleases();
 })();

@@ -81,7 +81,7 @@ a:hover { text-decoration: underline; }
    ============================================================ */
 .site-header {
   position: sticky; top: 0; z-index: 40;
-  display: flex; align-items: center; gap: 16px;
+  display: flex; align-items: center; gap: 12px;
   padding: 10px max(20px, env(safe-area-inset-left));
   background: color-mix(in srgb, var(--bg) 85%, transparent);
   backdrop-filter: blur(12px);
@@ -95,10 +95,10 @@ a:hover { text-decoration: underline; }
   color: var(--go-text); background: var(--go);
   border-radius: 9px; box-shadow: inset 0 -3px 0 rgba(0, 0, 0, .18);
 }
+img.brand-mark { background: none; box-shadow: none; object-fit: contain; }
 .brand-text { display: flex; flex-direction: column; line-height: 1.25; }
 .brand-text strong { font-size: 14px; letter-spacing: .01em; }
 .brand-text small { font-size: 11px; color: var(--muted); }
-img.brand-mark { background: none; box-shadow: none; object-fit: contain; }
 
 .site-nav { display: flex; gap: 4px; margin-left: auto; }
 .site-nav a {
@@ -106,12 +106,16 @@ img.brand-mark { background: none; box-shadow: none; object-fit: contain; }
 }
 .site-nav a:hover { background: var(--accent-soft); color: var(--text); text-decoration: none; }
 
-.theme-toggle {
-  flex-shrink: 0; width: 38px; height: 38px; border-radius: 10px; cursor: pointer;
+.header-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; margin-left: 8px; }
+
+.theme-toggle, .lang-toggle {
+  height: 38px; border-radius: 10px; cursor: pointer;
   background: var(--surface-2); color: var(--text);
-  border: 1px solid var(--border); font-size: 16px; line-height: 1;
+  border: 1px solid var(--border); font-family: inherit; line-height: 1;
 }
-.theme-toggle:hover { border-color: var(--border-strong); }
+.theme-toggle { width: 38px; font-size: 16px; }
+.lang-toggle { padding: 0 12px; font-size: 12px; font-weight: 700; letter-spacing: .02em; }
+.theme-toggle:hover, .lang-toggle:hover { border-color: var(--border-strong); }
 
 /* ============================================================
    ヒーロー
@@ -132,7 +136,7 @@ img.brand-mark { background: none; box-shadow: none; object-fit: contain; }
 
 .hero-badges { display: flex; flex-wrap: wrap; gap: 8px 16px; margin: 0; padding: 0; list-style: none; }
 .hero-badges li { display: flex; align-items: center; gap: 7px; font-size: 13px; color: var(--muted); }
-.hero-badges .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--go); }
+.hero-badges .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--go); flex-shrink: 0; }
 
 /* ---- ダウンロードカード ---- */
 .download-card {
@@ -140,7 +144,7 @@ img.brand-mark { background: none; box-shadow: none; object-fit: contain; }
   background: var(--surface); border: 1px solid var(--border);
   border-radius: var(--radius); box-shadow: var(--shadow); padding: 18px;
 }
-.dl-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.dl-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
 .dl-label { font-size: 12px; color: var(--muted); letter-spacing: .04em; }
 .chip {
   font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--accent);
@@ -162,7 +166,6 @@ img.brand-mark { background: none; box-shadow: none; object-fit: contain; }
   flex: 1; padding: 9px 12px; font-size: 13px; font-weight: 500;
   background: var(--surface-2); color: var(--text); border-color: var(--border);
 }
-.btn[aria-disabled="true"] { opacity: .55; pointer-events: none; }
 
 .dl-meta {
   margin: 16px 0 0; padding: 14px 0 0; border-top: 1px solid var(--border);
@@ -185,7 +188,7 @@ img.brand-mark { background: none; box-shadow: none; object-fit: contain; }
   display: flex; align-items: center; gap: 10px;
 }
 .section h2::before {
-  content: ""; width: 4px; height: 20px; border-radius: 2px; background: var(--accent);
+  content: ""; width: 4px; height: 20px; border-radius: 2px; background: var(--accent); flex-shrink: 0;
 }
 .section h3 { margin: 28px 0 12px; font-size: 15px; font-weight: 700; }
 .prose { margin: 0 0 4px; color: var(--muted); max-width: 70ch; }
@@ -224,21 +227,12 @@ img.brand-mark { background: none; box-shadow: none; object-fit: contain; }
   background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-s);
   padding: 14px 16px;
 }
-.release-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 8px; }
-.release-head { margin-bottom: 0; }
+.release-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 0; }
 .release-head .rel-title { font-size: 14px; font-weight: 700; color: var(--text); }
-.release-head time { font-size: 12px; color: var(--muted); }
+.release-head time { font-size: 12px; color: var(--muted); margin-left: auto; }
 .release-head .latest {
   font-size: 11px; font-weight: 700; color: var(--go-text); background: var(--go);
   padding: 1px 8px; border-radius: 999px;
-}
-.release-body { font-size: 13.5px; color: var(--muted); }
-.release-body p { margin: 0 0 6px; }
-.release-body ul { margin: 0; padding-left: 1.2em; }
-.release-body li { margin-bottom: 3px; }
-.release-body code {
-  font-family: var(--mono); font-size: .92em; background: var(--surface-2);
-  padding: .1em .35em; border-radius: 4px;
 }
 
 /* ---- アコーディオン ---- */
@@ -313,6 +307,7 @@ img.brand-mark { background: none; box-shadow: none; object-fit: contain; }
    ============================================================ */
 @media (max-width: 900px) {
   .site-nav { display: none; }
+  .header-actions { margin-left: auto; }
   .hero { grid-template-columns: 1fr; padding: 32px 20px 24px; gap: 24px; }
   .download-card { position: static; }
 }
@@ -329,5 +324,5 @@ img.brand-mark { background: none; box-shadow: none; object-fit: contain; }
 }
 
 @media print {
-  .site-header, .mobile-bar, .theme-toggle, .dl-actions { display: none; }
+  .site-header, .mobile-bar, .theme-toggle, .lang-toggle, .dl-actions { display: none; }
 }

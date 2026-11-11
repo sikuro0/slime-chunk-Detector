@@ -205,17 +205,17 @@
     function text(id, v) { var el = $(id); if (el) el.textContent = v; }
   }
 
-  function renderChangelog(list) {
+    function renderChangelog(list) {
     var box = $("changelogList");
     if (!box) return;
     box.innerHTML = list.map(function (r, i) {
+      var title = r.name || r.tag_name || "";
       return '<article class="release">'
         + '<div class="release-head">'
-        + '<span class="tag">' + escapeHtml(r.tag_name || r.name || "") + "</span>"
+        + '<span class="rel-title">' + escapeHtml(title) + "</span>"
         + (i === 0 ? '<span class="latest">最新</span>' : "")
         + '<time datetime="' + escapeHtml(r.published_at || "") + '">' + formatDate(r.published_at) + "</time>"
         + "</div>"
-        + '<div class="release-body">' + renderNotes(r.body) + "</div>"
         + "</article>";
     }).join("");
   }
